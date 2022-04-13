@@ -14,6 +14,7 @@ import com.example.juaraandroid_pokemonapp.feature.state.DetailPokemonStatState
 import com.example.juaraandroid_pokemonapp.feature.state.HomeScreenState
 import com.example.juaraandroid_pokemonapp.util.PokemonConstant.ONE_SKILL_MONS
 import com.example.juaraandroid_pokemonapp.util.PokemonConstant.ONE_TYPE_MONS
+import com.example.juaraandroid_pokemonapp.util.RecyclerHorizontalSnapHelper
 
 @BindingAdapter("listData")
 fun bindRecyclerView(recyclerView: RecyclerView, data: HomeScreenState) {
@@ -21,6 +22,10 @@ fun bindRecyclerView(recyclerView: RecyclerView, data: HomeScreenState) {
     val adapter = recyclerView.adapter as HomeAdapter
     if (data.data.isNotEmpty()){
         adapter.submitList(data.data)
+    }
+    if (recyclerView.onFlingListener == null) {
+        RecyclerHorizontalSnapHelper()
+            .attachToRecyclerView(recyclerView)
     }
 }
 
