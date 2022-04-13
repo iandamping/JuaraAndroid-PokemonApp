@@ -11,7 +11,7 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class BaseSourceImpl @Inject constructor(): BaseSource {
+class BaseSourceImpl @Inject constructor() : BaseSource {
     override suspend fun <T> oneShotCalls(call: suspend () -> Response<T>): ApiResult<T> {
         try {
             val response = call.invoke()

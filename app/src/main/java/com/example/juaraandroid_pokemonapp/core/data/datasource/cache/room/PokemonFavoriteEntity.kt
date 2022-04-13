@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey
 data class PokemonFavoriteEntity(
     @PrimaryKey
     @ColumnInfo(name = "pokemon_favorite_id") val pokemonFavoriteId: Int?,
+    @ColumnInfo(name = "pokemon_id") val pokemonId: Int,
     @ColumnInfo(name = "pokemon_name") val pokemonName: String,
     @ColumnInfo(name = "pokemon_weight") val pokemonWeight: Int,
     @ColumnInfo(name = "pokemon_height") val pokemonHeight: Int,
@@ -32,5 +33,5 @@ data class PokemonFavoriteEntity(
     @ColumnInfo(name = "pokemon_stat_point5") val pokemonStatPoint5: Int,
     @ColumnInfo(name = "pokemon_type0") val pokemonType0: String,
     @ColumnInfo(name = "pokemon_type1") val pokemonType1: String?,
-    @ColumnInfo(name = "pokemon_species_url")val pokemonSpeciesUrl:String
+    @ColumnInfo(name = "pokemon_species_url") val pokemonSpeciesUrl: String
 )

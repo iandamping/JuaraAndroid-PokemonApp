@@ -1,4 +1,13 @@
 <resources>
-    <string name="app_name">JuaraAndroid-PokemonApp</string>
+    <string name="app_name">PokemonApp</string>
     <string name="favorite">favorite</string>
+    <string name="switch_layout_manager">switch layout manager</string>
+    <string name="main_image">main image</string>
+    <string name="favorite_image">favorite image</string>
+    <string name="small_pokemon_image_1">small pokemon image 1</string>
+    <string name="small_pokemon_image_2">small pokemon image 2</string>
+    <string name="small_pokemon_image_3">small pokemon image 3</string>
+    <string name="small_pokemon_image_4">small pokemon image 4</string>
+    <string name="type">type </string>
+    <string name="ability">ability </string>
 </resources>

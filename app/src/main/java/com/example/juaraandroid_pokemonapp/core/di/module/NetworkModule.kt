@@ -1,17 +1,13 @@
 package com.example.juaraandroid_pokemonapp.core.di.module
 
-import android.content.Context
 import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.ApiInterface
 import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant.BASE_URL
-import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant.cacheSize
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -34,16 +30,10 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClientCache(@ApplicationContext context: Context): Cache =
-        Cache(context.cacheDir, cacheSize)
-
-    @Provides
-    @Singleton
-    fun provideOkHttpClient(cache: Cache): OkHttpClient = OkHttpClient.Builder()
-        .connectTimeout(60L, TimeUnit.SECONDS)
-        .writeTimeout(60L, TimeUnit.SECONDS)
-        .readTimeout(60L, TimeUnit.SECONDS)
-        .cache(cache)
+    fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
+        .connectTimeout(30L, TimeUnit.SECONDS)
+        .writeTimeout(30L, TimeUnit.SECONDS)
+        .readTimeout(30L, TimeUnit.SECONDS)
         .addInterceptor(HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         })

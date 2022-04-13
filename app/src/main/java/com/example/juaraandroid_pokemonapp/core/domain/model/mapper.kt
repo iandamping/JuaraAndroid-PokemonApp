@@ -96,6 +96,7 @@ fun List<PokemonSpeciesEggGroupResponse>.checkEggGroupList(size: Int, position: 
 
 fun PokemonDetail.mapToFavoriteDatabase(): PokemonFavoriteEntity = PokemonFavoriteEntity(
     pokemonFavoriteId = null,
+    pokemonId = pokemonId,
     pokemonWeight = pokemonWeight,
     pokemonHeight = pokemonHeight,
     pokemonName = pokemonName,
@@ -120,5 +121,28 @@ fun PokemonDetail.mapToFavoriteDatabase(): PokemonFavoriteEntity = PokemonFavori
     pokemonType1 = pokemonType1,
     pokemonAbility1 = pokemonAbility1,
     pokemonAbility2 = pokemonAbility2,
+    pokemonSpeciesUrl = pokemonSpeciesUrl
+)
+
+fun PokemonFavoriteEntity.mapToFavorite(): PokemonDetail = PokemonDetail(
+    pokemonId = pokemonId,
+    pokemonWeight = pokemonWeight,
+    pokemonHeight = pokemonHeight,
+    pokemonName = pokemonName,
+    pokemonImage = pokemonImage,
+    pokemonSmallImage1 = pokemonSmallImage1,
+    pokemonSmallImage2 = pokemonSmallImage2,
+    pokemonSmallImage3 = pokemonSmallImage3,
+    pokemonSmallImage4 = pokemonSmallImage4,
+    pokemonStat0 = PokemonStat(pokemonStatPoint0, pokemonStatName0),
+    pokemonStat1 = PokemonStat(pokemonStatPoint0, pokemonStatName0),
+    pokemonStat2 = PokemonStat(pokemonStatPoint0, pokemonStatName0),
+    pokemonStat3 = PokemonStat(pokemonStatPoint0, pokemonStatName0),
+    pokemonStat4 = PokemonStat(pokemonStatPoint0, pokemonStatName0),
+    pokemonStat5 = PokemonStat(pokemonStatPoint0, pokemonStatName0),
+    pokemonType0 = pokemonType0,
+    pokemonType1 = pokemonType1 ?: "",
+    pokemonAbility1 = pokemonAbility1,
+    pokemonAbility2 = pokemonAbility2 ?: "",
     pokemonSpeciesUrl = pokemonSpeciesUrl
 )

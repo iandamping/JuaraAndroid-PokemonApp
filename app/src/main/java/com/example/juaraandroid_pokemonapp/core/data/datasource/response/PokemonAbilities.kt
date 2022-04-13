@@ -14,5 +14,5 @@ data class PokemonAbilitiesResponse(
 )
 
 data class PokemonAbilitiesNameResponse(
-    @Json(name="name") val abilityName: String
+    @Json(name = "name") val abilityName: String
 )

@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 
 
 data class PokemonCharacteristicResponse(
-    @field:Json(name ="descriptions") val descriptions: List<ItemPokemonCharacteristicResponse>
+    @field:Json(name = "descriptions") val descriptions: List<ItemPokemonCharacteristicResponse>
 )
 
 data class ItemPokemonCharacteristicResponse(

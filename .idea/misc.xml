@@ -4,14 +4,18 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/WORK_PROJECT/GITHUBKU/JuaraAndroid-PokemonApp/app/src/main/res/drawable/ic_baseline_bookmark_24.xml" value="0.1245" />
+        <entry key="..\:/WORK_PROJECT/GITHUBKU/JuaraAndroid-PokemonApp/app/src/main/res/drawable/ic_linear_layout.xml" value="0.1765" />
         <entry key="..\:/WORK_PROJECT/GITHUBKU/JuaraAndroid-PokemonApp/app/src/main/res/drawable/ic_round_star_border_24.xml" value="0.1245" />
         <entry key="..\:/WORK_PROJECT/GITHUBKU/JuaraAndroid-PokemonApp/app/src/main/res/drawable/ic_round_star_rate_24.xml" value="0.1245" />
+        <entry key="..\:/WORK_PROJECT/GITHUBKU/JuaraAndroid-PokemonApp/app/src/main/res/drawable/ic_vertical_layout.xml" value="0.2115" />
         <entry key="..\:/WORK_PROJECT/GITHUBKU/JuaraAndroid-PokemonApp/app/src/main/res/layout/activity_main.xml" value="0.17074275362318841" />
         <entry key="..\:/WORK_PROJECT/GITHUBKU/JuaraAndroid-PokemonApp/app/src/main/res/layout/custom_loading.xml" value="0.17074275362318841" />
-        <entry key="..\:/WORK_PROJECT/GITHUBKU/JuaraAndroid-PokemonApp/app/src/main/res/layout/fragment_detail.xml" value="0.25" />
+        <entry key="..\:/WORK_PROJECT/GITHUBKU/JuaraAndroid-PokemonApp/app/src/main/res/layout/fragment_detail.xml" value="0.1" />
+        <entry key="..\:/WORK_PROJECT/GITHUBKU/JuaraAndroid-PokemonApp/app/src/main/res/layout/fragment_favorite.xml" value="0.1" />
         <entry key="..\:/WORK_PROJECT/GITHUBKU/JuaraAndroid-PokemonApp/app/src/main/res/layout/fragment_home.xml" value="0.17074275362318841" />
-        <entry key="..\:/WORK_PROJECT/GITHUBKU/JuaraAndroid-PokemonApp/app/src/main/res/layout/item_home.xml" value="0.22" />
+        <entry key="..\:/WORK_PROJECT/GITHUBKU/JuaraAndroid-PokemonApp/app/src/main/res/layout/item_home.xml" value="0.1" />
         <entry key="..\:/WORK_PROJECT/GITHUBKU/JuaraAndroid-PokemonApp/app/src/main/res/menu/favorite_menu.xml" value="0.10833333333333334" />
+        <entry key="..\:/WORK_PROJECT/GITHUBKU/JuaraAndroid-PokemonApp/app/src/main/res/menu/layout_menu.xml" value="0.20416666666666666" />
       </map>
     </option>
   </component>

@@ -97,7 +97,7 @@ class PokemonRepositoryImpl @Inject constructor(
     }
 
     override suspend fun clearFavorite(id: Int) {
-       cacheDataSource.clearFavorite(id)
+        cacheDataSource.clearFavorite(id)
     }
 
     override fun getListFavorite(): Flow<List<PokemonFavoriteEntity>> {

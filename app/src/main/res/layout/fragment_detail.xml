@@ -21,7 +21,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@tools:sample/backgrounds/scenic" />
+            tools:src="@tools:sample/backgrounds/scenic"
+            android:contentDescription="@string/main_image" />
 
         <ImageView
             android:id="@+id/ivFavorite"
@@ -31,7 +32,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/ivItemPokemonImage"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_round_star_border_24" />
+            tools:src="@drawable/ic_round_star_border_24"
+            android:contentDescription="@string/favorite_image" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/linearLayoutCompat"
@@ -48,28 +50,31 @@
                 android:layout_height="50dp"
                 android:scaleType="centerCrop"
                 android:layout_weight="1"
-                 />
+                android:contentDescription="@string/small_pokemon_image_1" />
 
             <ImageView
                 android:id="@+id/ivItemSmallPokemonImage2"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:scaleType="centerCrop"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:contentDescription="@string/small_pokemon_image_2" />
 
             <ImageView
                 android:id="@+id/ivItemSmallPokemonImage3"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:scaleType="centerCrop"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:contentDescription="@string/small_pokemon_image_3" />
 
             <ImageView
                 android:id="@+id/ivItemSmallPokemonImage4"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:scaleType="centerCrop"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:contentDescription="@string/small_pokemon_image_4" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -240,7 +245,7 @@
                         android:id="@+id/tvTypeName0"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="type " />
+                        android:text="@string/type" />
 
                     <TextView
                         android:id="@+id/tvType0"
@@ -284,7 +289,7 @@
                         android:id="@+id/tvAbilityName0"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ability  " />
+                        android:text="@string/ability" />
 
                     <TextView
                         android:id="@+id/tvAbility0"

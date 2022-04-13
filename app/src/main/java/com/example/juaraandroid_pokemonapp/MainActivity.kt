@@ -1,7 +1,7 @@
 package com.example.juaraandroid_pokemonapp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.example.juaraandroid_pokemonapp.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 

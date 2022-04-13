@@ -25,15 +25,16 @@ class DetailViewModel @Inject constructor(private val useCase: PokemonUseCase) :
     private val _selectedPokemonId = MutableStateFlow(0)
     val selectedPokemonId = _selectedPokemonId.asStateFlow()
 
-    fun listFavorite (): Flow<List<PokemonFavoriteEntity>> = useCase.getListFavorite()
+    fun listFavorite(): Flow<List<PokemonFavoriteEntity>> = useCase.getListFavorite()
 
     fun setSelectedPokemonId(id: Int) {
         _selectedPokemonId.value = id
     }
 
-    fun setBookmarkState(data:Boolean){
+    fun setBookmarkState(data: Boolean) {
         _bookmarkState.value = data
     }
+
     init {
         viewModelScope.launch {
             selectedPokemonId.flatMapLatest {
@@ -51,13 +52,13 @@ class DetailViewModel @Inject constructor(private val useCase: PokemonUseCase) :
         }
     }
 
-    fun saveFavorite(data: PokemonDetail){
+    fun saveFavorite(data: PokemonDetail) {
         viewModelScope.launch {
             useCase.saveFavorite(data)
         }
     }
 
-    fun clearFavorite(id: Int){
+    fun clearFavorite(id: Int) {
         viewModelScope.launch {
             useCase.clearFavorite(id)
         }
