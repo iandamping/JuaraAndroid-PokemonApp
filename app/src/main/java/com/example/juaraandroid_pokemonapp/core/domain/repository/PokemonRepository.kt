@@ -1,5 +1,6 @@
 package com.example.juaraandroid_pokemonapp.core.domain.repository
 
+import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.PokemonFavoriteEntity
 import com.example.juaraandroid_pokemonapp.core.domain.model.DomainResult
 import com.example.juaraandroid_pokemonapp.core.domain.response.PokemonDetail
 import com.example.juaraandroid_pokemonapp.core.domain.response.PokemonDetailSpecies
@@ -22,5 +23,10 @@ interface PokemonRepository {
 
     fun getPokemonById(id: Int): Flow<DomainResult<PokemonDetail>>
 
+    suspend fun saveFavorite(data: PokemonDetail)
+
+    suspend fun clearFavorite(id: Int)
+
+    fun getListFavorite(): Flow<List<PokemonFavoriteEntity>>
 
 }

@@ -1,5 +1,6 @@
 package com.example.juaraandroid_pokemonapp.core.domain.usecase
 
+import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.PokemonFavoriteEntity
 import com.example.juaraandroid_pokemonapp.core.domain.model.DomainResult
 import com.example.juaraandroid_pokemonapp.core.domain.model.UiState
 import com.example.juaraandroid_pokemonapp.core.domain.repository.PokemonRepository
@@ -55,6 +56,18 @@ class PokemonUseCaseImpl @Inject constructor(private val repository: PokemonRepo
                 is DomainResult.Content -> UiState.Content(it.data)
             }
         }
+    }
+
+    override suspend fun saveFavorite(data: PokemonDetail) {
+        repository.saveFavorite(data)
+    }
+
+    override suspend fun clearFavorite(id: Int) {
+        repository.clearFavorite(id)
+    }
+
+    override fun getListFavorite(): Flow<List<PokemonFavoriteEntity>> {
+        return repository.getListFavorite()
     }
 
 }

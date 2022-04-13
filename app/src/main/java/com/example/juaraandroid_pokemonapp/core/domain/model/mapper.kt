@@ -1,5 +1,6 @@
 package com.example.juaraandroid_pokemonapp.core.domain.model
 
+import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.PokemonFavoriteEntity
 import com.example.juaraandroid_pokemonapp.core.data.datasource.response.*
 import com.example.juaraandroid_pokemonapp.core.domain.response.PokemonDetail
 import com.example.juaraandroid_pokemonapp.core.domain.response.PokemonDetailSpecies
@@ -92,3 +93,32 @@ fun List<PokemonSpeciesEggGroupResponse>.checkEggGroupList(size: Int, position: 
     if (this.size > size) {
         this[position].eggName
     } else ONE_EGG_MONS
+
+fun PokemonDetail.mapToFavoriteDatabase(): PokemonFavoriteEntity = PokemonFavoriteEntity(
+    pokemonFavoriteId = null,
+    pokemonWeight = pokemonWeight,
+    pokemonHeight = pokemonHeight,
+    pokemonName = pokemonName,
+    pokemonImage = pokemonImage,
+    pokemonSmallImage1 = pokemonSmallImage1,
+    pokemonSmallImage2 = pokemonSmallImage2,
+    pokemonSmallImage3 = pokemonSmallImage3,
+    pokemonSmallImage4 = pokemonSmallImage4,
+    pokemonStatName0 = pokemonStat0.name,
+    pokemonStatName1 = pokemonStat1.name,
+    pokemonStatName2 = pokemonStat2.name,
+    pokemonStatName3 = pokemonStat3.name,
+    pokemonStatName4 = pokemonStat4.name,
+    pokemonStatName5 = pokemonStat5.name,
+    pokemonStatPoint0 = pokemonStat0.point,
+    pokemonStatPoint1 = pokemonStat1.point,
+    pokemonStatPoint2 = pokemonStat2.point,
+    pokemonStatPoint3 = pokemonStat3.point,
+    pokemonStatPoint4 = pokemonStat4.point,
+    pokemonStatPoint5 = pokemonStat5.point,
+    pokemonType0 = pokemonType0,
+    pokemonType1 = pokemonType1,
+    pokemonAbility1 = pokemonAbility1,
+    pokemonAbility2 = pokemonAbility2,
+    pokemonSpeciesUrl = pokemonSpeciesUrl
+)

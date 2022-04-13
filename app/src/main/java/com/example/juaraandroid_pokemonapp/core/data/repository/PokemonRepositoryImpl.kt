@@ -1,6 +1,8 @@
 package com.example.juaraandroid_pokemonapp.core.data.repository
 
 import com.example.juaraandroid_pokemonapp.core.data.datasource.PokemonRemoteDataSource
+import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.PokemonCacheDataSource
+import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.PokemonFavoriteEntity
 import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant.EMPTY_DATA
 import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant.NETWORK_ERROR
 import com.example.juaraandroid_pokemonapp.core.data.model.DataSourceResult
@@ -20,7 +22,8 @@ import javax.inject.Inject
  * Indonesia.
  */
 class PokemonRepositoryImpl @Inject constructor(
-    private val remoteDataSource: PokemonRemoteDataSource
+    private val remoteDataSource: PokemonRemoteDataSource,
+    private val cacheDataSource: PokemonCacheDataSource
 ) :
     PokemonRepository {
 
@@ -87,6 +90,18 @@ class PokemonRepositoryImpl @Inject constructor(
                 }
             }
         }
+    }
+
+    override suspend fun saveFavorite(data: PokemonDetail) {
+        cacheDataSource.saveFavorite(data)
+    }
+
+    override suspend fun clearFavorite(id: Int) {
+       cacheDataSource.clearFavorite(id)
+    }
+
+    override fun getListFavorite(): Flow<List<PokemonFavoriteEntity>> {
+        return cacheDataSource.getListFavorite()
     }
 
 

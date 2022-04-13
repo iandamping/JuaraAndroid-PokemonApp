@@ -2,10 +2,9 @@ package com.example.juaraandroid_pokemonapp.feature.detail
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -21,25 +20,26 @@ import com.example.juaraandroid_pokemonapp.util.PokemonConstant.ONE_SKILL_MONS
 import com.example.juaraandroid_pokemonapp.util.PokemonConstant.ONE_TYPE_MONS
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class DetailFragment:Fragment() {
+class DetailFragment : Fragment() {
     @Inject
     @CustomDialogQualifier
     lateinit var customDialog: AlertDialog
 
-    private val detailViewModel:DetailViewModel by viewModels()
-    private var _binding:FragmentDetailBinding? = null
+    private val detailViewModel: DetailViewModel by viewModels()
+    private var _binding: FragmentDetailBinding? = null
+    private var isFavorite: Boolean = false
+    private var idForDeleteItem: Int? = null
+    private var pokemonDetail: PokemonDetail? = null
     private val binding get() = _binding
-    private val args:DetailFragmentArgs by navArgs()
+    private val args: DetailFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         detailViewModel.setSelectedPokemonId(args.selectedPokemonId)
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,12 +52,17 @@ class DetailFragment:Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        detailViewModel.detailState.launchAndCollectIn(this.viewLifecycleOwner,Lifecycle.State.STARTED){
-            if (it.data!=null){
-               binding?.initView(it.data)
+        observeBookmarkState()
+        detailViewModel.detailState.launchAndCollectIn(
+            this.viewLifecycleOwner,
+            Lifecycle.State.STARTED
+        ) {
+            if (it.data != null) {
+                pokemonDetail = it.data
+                binding?.initView(it.data)
             }
-            if (it.failedMessage.isNotEmpty()){
-                Snackbar.make(view,it.failedMessage, Snackbar.LENGTH_SHORT).show()
+            if (it.failedMessage.isNotEmpty()) {
+                Snackbar.make(view, it.failedMessage, Snackbar.LENGTH_SHORT).show()
             }
             if (it.isLoading) {
                 customDialog.show()
@@ -66,6 +71,7 @@ class DetailFragment:Fragment() {
     }
 
     private fun FragmentDetailBinding.initView(data: PokemonDetail) {
+        observeDatabase(data.pokemonName)
         bindImage(ivItemPokemonImage, data.pokemonImage)
         bindImage(ivItemSmallPokemonImage1, data.pokemonSmallImage1)
         bindImage(ivItemSmallPokemonImage2, data.pokemonSmallImage3)
@@ -98,14 +104,66 @@ class DetailFragment:Fragment() {
             llAbilities1.visibility = View.VISIBLE
             tvAbility1.text = data.pokemonAbility2
         }
+
+        ivFavorite.setOnClickListener {
+            if (isFavorite) {
+                if (idForDeleteItem != null) {
+                    detailViewModel.clearFavorite(checkNotNull(idForDeleteItem))
+                }
+            } else {
+                if (pokemonDetail != null) {
+                    detailViewModel.saveFavorite(checkNotNull(pokemonDetail))
+                }
+            }
+        }
     }
 
-    fun bindImage(imgView: ImageView, imgUrl: String) {
+    private fun bindImage(imgView: ImageView, imgUrl: String) {
         if (imgUrl.isNotEmpty()) {
             val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
             imgView.load(imgUri) {
                 placeholder(R.drawable.placeholder_image)
                 error(R.drawable.error_image)
+            }
+        }
+    }
+
+    private fun observeBookmarkState() {
+        detailViewModel.bookmarkState.launchAndCollectIn(
+            this.viewLifecycleOwner,
+            Lifecycle.State.STARTED
+        ) {
+            isFavorite = it
+            binding?.ivFavorite?.load(
+                if (isFavorite)
+                    ContextCompat.getDrawable(
+                        this@DetailFragment.requireContext(),
+                        R.drawable.ic_round_star_rate_24
+                    )
+                else ContextCompat.getDrawable(
+                    this@DetailFragment.requireContext(),
+                    R.drawable.ic_round_star_border_24
+                )
+            )
+
+        }
+    }
+
+    private fun observeDatabase(pokemonName: String) {
+        detailViewModel.detailState.launchAndCollectIn(
+            this.viewLifecycleOwner,
+            Lifecycle.State.STARTED
+        ) {
+            detailViewModel.listFavorite().collect { favData ->
+                favData.firstOrNull { it.pokemonName == pokemonName }.let { singleData ->
+                    idForDeleteItem = if (singleData != null) {
+                        detailViewModel.setBookmarkState(singleData.pokemonName == pokemonName)
+                        singleData.pokemonFavoriteId
+                    } else {
+                        detailViewModel.setBookmarkState(false)
+                        null
+                    }
+                }
             }
         }
     }

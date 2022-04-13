@@ -10,6 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
+
         <ImageView
             android:id="@+id/ivItemPokemonImage"
             android:layout_width="match_parent"
@@ -21,6 +23,15 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@tools:sample/backgrounds/scenic" />
 
+        <ImageView
+            android:id="@+id/ivFavorite"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/ivItemPokemonImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_round_star_border_24" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/linearLayoutCompat"

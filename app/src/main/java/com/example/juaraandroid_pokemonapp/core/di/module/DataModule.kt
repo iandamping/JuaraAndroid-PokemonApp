@@ -2,6 +2,8 @@ package com.example.juaraandroid_pokemonapp.core.di.module
 
 import com.example.juaraandroid_pokemonapp.core.data.datasource.PokemonRemoteDataSource
 import com.example.juaraandroid_pokemonapp.core.data.datasource.PokemonRemoteDataSourceImpl
+import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.PokemonCacheDataSource
+import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.PokemonCacheDataSourceImpl
 import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.BaseSource
 import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.BaseSourceImpl
 import com.example.juaraandroid_pokemonapp.core.data.repository.PokemonRepositoryImpl
@@ -30,6 +32,10 @@ interface DataModule {
     @Binds
     @Singleton
     fun bindsPokemonRemoteSource(dataSource: PokemonRemoteDataSourceImpl): PokemonRemoteDataSource
+
+    @Binds
+    @Singleton
+    fun bindsPokemonCacheSource(dataSource: PokemonCacheDataSourceImpl): PokemonCacheDataSource
 
     @Binds
     @Singleton

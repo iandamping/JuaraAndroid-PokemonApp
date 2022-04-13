@@ -1,5 +1,6 @@
 package com.example.juaraandroid_pokemonapp.core.domain.usecase
 
+import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.PokemonFavoriteEntity
 import com.example.juaraandroid_pokemonapp.core.domain.model.UiState
 import com.example.juaraandroid_pokemonapp.core.domain.response.PokemonDetail
 import com.example.juaraandroid_pokemonapp.core.domain.response.PokemonDetailSpecies
@@ -21,4 +22,10 @@ interface PokemonUseCase {
     fun getPokemonLocationAreas(id: Int): Flow<UiState<List<String>>>
 
     fun getPokemonById(id: Int): Flow<UiState<PokemonDetail>>
+
+    suspend fun saveFavorite(data: PokemonDetail)
+
+    suspend fun clearFavorite(id: Int)
+
+    fun getListFavorite(): Flow<List<PokemonFavoriteEntity>>
 }
