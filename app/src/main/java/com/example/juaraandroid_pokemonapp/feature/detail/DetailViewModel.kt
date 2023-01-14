@@ -2,9 +2,9 @@ package com.example.juaraandroid_pokemonapp.feature.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.PokemonFavoriteEntity
-import com.example.juaraandroid_pokemonapp.core.domain.model.UiState
-import com.example.juaraandroid_pokemonapp.core.domain.response.PokemonDetail
+import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonFavoriteEntity
+import com.example.juaraandroid_pokemonapp.core.domain.common.DomainResult
+import com.example.juaraandroid_pokemonapp.core.domain.model.PokemonDetail
 import com.example.juaraandroid_pokemonapp.core.domain.usecase.PokemonUseCase
 import com.example.juaraandroid_pokemonapp.feature.state.DetailPokemonStatState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,15 +37,13 @@ class DetailViewModel @Inject constructor(private val useCase: PokemonUseCase) :
 
     init {
         viewModelScope.launch {
-            selectedPokemonId.flatMapLatest {
-                useCase.getPokemonById(it)
-            }.collect {
-                when (val result = it) {
-                    is UiState.Content -> _detailState.update { currentUiState ->
-                        currentUiState.copy(isLoading = false, data = result.data)
+            selectedPokemonId.collect {
+                when (val data = useCase.getPokemonById(it)) {
+                    is DomainResult.Content -> _detailState.update { currentUiState ->
+                        currentUiState.copy(isLoading = false, data = data.data)
                     }
-                    is UiState.Error -> _detailState.update { currentUiState ->
-                        currentUiState.copy(isLoading = false, failedMessage = result.message)
+                    is DomainResult.Error -> _detailState.update { currentUiState ->
+                        currentUiState.copy(isLoading = false, failedMessage = data.message)
                     }
                 }
             }

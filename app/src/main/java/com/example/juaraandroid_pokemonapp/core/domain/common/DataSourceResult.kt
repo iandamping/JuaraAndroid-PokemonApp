@@ -1,4 +1,4 @@
-package com.example.juaraandroid_pokemonapp.core.data.model
+package com.example.juaraandroid_pokemonapp.core.domain.common
 
 sealed class DataSourceResult<out T> {
     data class SourceValue<out T>(val data: T) : DataSourceResult<T>()

@@ -2,19 +2,17 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-    id 'kotlin-parcelize'
     id 'dagger.hilt.android.plugin'
-    id 'androidx.navigation.safeargs'
 }
 
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.juaraandroid_pokemonapp"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -33,10 +31,19 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+        freeCompilerArgs += ["-opt-in=kotlin.RequiresOptIn",
+                             // Enable experimental coroutines APIs, including Flow
+                             "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                             "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
+                             "-opt-in=kotlinx.coroutines.FlowPreview",
+                             "-opt-in=androidx.paging.ExperimentalPagingApi",
+                             "-opt-in=kotlin.Experimental"]
     }
     buildFeatures {
-        dataBinding true
-        viewBinding true
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_version
     }
 }
 
@@ -46,25 +53,62 @@ kapt {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.5.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.4.2'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.4.2'
+    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.appcompat:appcompat:1.6.0'
+    implementation 'com.google.android.material:material:1.7.0'
+    implementation(platform("androidx.compose:compose-bom:$composebom_version"))
+    // or only import the main APIs for the underlying toolkit systems,
+    // such as input and measurement/layout
+    implementation 'androidx.compose.ui:ui'
+    implementation 'androidx.compose.foundation:foundation'
+    //Material desing 2
+    implementation 'androidx.compose.material:material'
+    //Material Design 3
+//    implementation 'androidx.compose.material3:material3'
+    // Android Studio Preview support
+    implementation 'androidx.compose.ui:ui-tooling-preview'
+    implementation 'androidx.navigation:navigation-testing:2.5.3'
+    implementation 'androidx.core:core-ktx:+'
+    debugImplementation 'androidx.compose.ui:ui-tooling'
+    // UI Tests
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.3.0'
+    debugImplementation 'androidx.compose.ui:ui-test-manifest:1.3.0'
+    // Optional - Integration with activities
+    implementation 'androidx.activity:activity-compose:1.6.1'
+    // Optional - Integration with ViewModels
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1'
+    // Optional - Integration with LiveData
+    implementation 'androidx.compose.runtime:runtime-livedata'
+    // compose constraint
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
+    // Optional - Included automatically by material, only add when you need
+    // the icons but not the material library (e.g. when using Material3 or a
+    // custom design system based on Foundation)
+    implementation 'androidx.compose.material:material-icons-core'
+    // Optional - Add full set of material icons
+    implementation 'androidx.compose.material:material-icons-extended'
+    // Optional - Add window size utils
+    implementation 'androidx.compose.material3:material3-window-size-class'
+    // optional - Jetpack Compose integration
+    implementation "androidx.paging:paging-compose:1.0.0-alpha17"
+
     testImplementation 'junit:junit:4.13.2'
+    testImplementation "io.mockk:mockk:1.12.4"
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     //lottie
-    implementation 'com.airbnb.android:lottie:4.1.0'
+    debugImplementation "com.airbnb.android:lottie-compose:4.1.0"
+    //navigation
+    implementation "androidx.navigation:navigation-compose:$navigation_version"
     //hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    implementation "androidx.hilt:hilt-navigation-compose:$hilt_navigation_version"
     //retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofitVer"
     // Retrofit with Moshi Converter
     implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
-    implementation "com.squareup.okhttp3:logging-interceptor:$okHttp3LogginInterceptorVer"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okHttp3Ver"
     implementation "com.squareup.okhttp3:okhttp:$okHttp3Ver"
     //coroutine
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
@@ -72,17 +116,17 @@ dependencies {
     // Moshi
     implementation 'com.squareup.moshi:moshi-kotlin:1.9.3'
     // Coil
-    implementation "io.coil-kt:coil:1.4.0"
+    implementation "io.coil-kt:coil-compose:2.2.2"
     //live data
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$livedata_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$livedata_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$livedata_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$livedata_version"
     //logger
-    implementation 'com.jakewharton.timber:timber:4.7.1'
-    //fragment
-    implementation 'androidx.fragment:fragment-ktx:1.4.1'
+    implementation "com.jakewharton.timber:timber:$timberVersion"
     //db
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
+    implementation "androidx.room:room-paging:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 }

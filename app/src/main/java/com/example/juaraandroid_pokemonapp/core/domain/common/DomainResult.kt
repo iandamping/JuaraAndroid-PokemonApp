@@ -1,4 +1,4 @@
-package com.example.juaraandroid_pokemonapp.core.domain.model
+package com.example.juaraandroid_pokemonapp.core.domain.common
 
 
 sealed class DomainResult<out T> {

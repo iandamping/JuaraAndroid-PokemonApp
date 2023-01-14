@@ -3,7 +3,9 @@ package com.example.juaraandroid_pokemonapp.core.di.module
 import android.content.Context
 import androidx.room.Room
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.PokemonDatabase
-import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.PokemonFavoriteDao
+import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.dao.PokemonFavoriteDao
+import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.dao.PokemonRemoteKeyDao
+import com.spesolution.myapplication.core.data.datasource.cache.room.PokemonPaginationDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,6 +29,16 @@ object DatabaseModule {
     @Provides
     fun provideFavoritePokemonDao(db: PokemonDatabase): PokemonFavoriteDao {
         return db.favoriteDao()
+    }
+
+    @Provides
+    fun providePokemonRemoteKeyDao(db: PokemonDatabase): PokemonRemoteKeyDao {
+        return db.remoteKeyDao()
+    }
+
+    @Provides
+    fun providePokemonPaginationDao(db: PokemonDatabase): PokemonPaginationDao {
+        return db.paginationDao()
     }
 
 

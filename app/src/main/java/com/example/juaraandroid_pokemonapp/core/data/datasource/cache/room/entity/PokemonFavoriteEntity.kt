@@ -1,4 +1,4 @@
-package com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room
+package com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

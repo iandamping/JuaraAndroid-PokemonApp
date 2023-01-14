@@ -1,5 +1,6 @@
 package com.example.juaraandroid_pokemonapp.core.di.module
 
+import com.example.juaraandroid_pokemonapp.core.di.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

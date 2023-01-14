@@ -1,4 +1,4 @@
-package com.example.juaraandroid_pokemonapp.core.domain.response
+package com.example.juaraandroid_pokemonapp.core.domain.model
 
 /**
  * Created by Ian Damping on 07,May,2021

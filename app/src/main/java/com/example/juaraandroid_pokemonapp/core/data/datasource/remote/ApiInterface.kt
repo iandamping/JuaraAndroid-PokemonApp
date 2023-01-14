@@ -7,6 +7,7 @@ import com.example.juaraandroid_pokemonapp.core.data.datasource.response.*
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 import retrofit2.http.Url
 
 /**
@@ -18,6 +19,9 @@ interface ApiInterface {
 
     @GET(GET_POKEMON)
     suspend fun getMainPokemon(): Response<PokemonMainResponse>
+
+    @GET(GET_POKEMON)
+    suspend fun getPaginationMainPokemon(@Query("offset") offset: Int): Response<PokemonMainResponse>
 
     @GET
     suspend fun getPokemon(@Url url: String): PokemonDetailResponse

@@ -3,7 +3,7 @@ package com.example.juaraandroid_pokemonapp.core.data.datasource
 import com.example.juaraandroid_pokemonapp.core.data.datasource.response.PokemonDetailResponse
 import com.example.juaraandroid_pokemonapp.core.data.datasource.response.PokemonResultsResponse
 import com.example.juaraandroid_pokemonapp.core.data.datasource.response.PokemonSpeciesDetailResponse
-import com.example.juaraandroid_pokemonapp.core.data.model.DataSourceResult
+import com.example.juaraandroid_pokemonapp.core.domain.common.DataSourceResult
 
 /**
  * Created by Ian Damping on 07,May,2021
@@ -13,6 +13,8 @@ import com.example.juaraandroid_pokemonapp.core.data.model.DataSourceResult
 interface PokemonRemoteDataSource {
 
     suspend fun getPokemon(): DataSourceResult<List<PokemonResultsResponse>>
+
+    suspend fun getPaginationPokemon(offset: Int): DataSourceResult<List<PokemonResultsResponse>>
 
     suspend fun getDetailPokemon(url: String): PokemonDetailResponse
 

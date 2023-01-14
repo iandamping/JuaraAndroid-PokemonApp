@@ -1,6 +1,6 @@
 package com.example.juaraandroid_pokemonapp.core.data.datasource.remote
 
-import com.example.juaraandroid_pokemonapp.core.data.model.ApiResult
+import com.example.juaraandroid_pokemonapp.core.domain.common.ApiResult
 import retrofit2.Response
 
 /**

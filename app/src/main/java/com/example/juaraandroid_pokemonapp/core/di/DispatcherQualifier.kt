@@ -1,4 +1,4 @@
-package com.example.juaraandroid_pokemonapp.core.di.module
+package com.example.juaraandroid_pokemonapp.core.di
 
 import javax.inject.Qualifier
 

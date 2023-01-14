@@ -16,4 +16,6 @@ object NetworkConstant {
     const val POKEMON_STARTING_OFFSET = 0
     const val POKEMON_OFFSET = 20
     const val NETWORK_PAGE_SIZE = 2
+    const val RESPONSE_BODY_NULL = "Response body null"
+    const val SERVER_ERROR = "Could not connect to server"
 }

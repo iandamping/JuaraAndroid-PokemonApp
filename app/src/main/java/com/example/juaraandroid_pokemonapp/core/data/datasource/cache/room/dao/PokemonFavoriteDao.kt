@@ -1,9 +1,10 @@
-package com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room
+package com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonFavoriteEntity
 import kotlinx.coroutines.flow.Flow
 
 /**
