@@ -113,6 +113,7 @@ dependencies {
     //coroutine
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0"
     // Moshi
     implementation 'com.squareup.moshi:moshi-kotlin:1.9.3'
     // Coil

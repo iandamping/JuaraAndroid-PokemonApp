@@ -12,11 +12,10 @@ import javax.inject.Inject
  * Indonesia.
  */
 class BaseSourceImpl @Inject constructor() : BaseSource {
-    override suspend fun <T> oneShotCalls(call: suspend () -> Response<T>): ApiResult<T> {
+    override suspend fun <T> oneShotCalls(call: Response<T>): ApiResult<T> {
         return try {
-            val response = call.invoke()
-            if (response.isSuccessful) {
-                val body = response.body()
+            if (call.isSuccessful) {
+                val body = call.body()
                 if (body != null) {
                     ApiResult.Success(body)
                 } else {

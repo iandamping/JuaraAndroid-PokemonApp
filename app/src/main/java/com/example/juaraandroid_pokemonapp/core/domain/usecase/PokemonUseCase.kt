@@ -18,7 +18,7 @@ interface PokemonUseCase {
 
     fun getPaginationPokemon(): Flow<PagingData<PokemonDetail>>
 
-    suspend fun getDetailSpeciesPokemon(url: String): PokemonDetailSpecies
+    suspend fun getDetailSpeciesPokemon(url: String): DomainResult<PokemonDetailSpecies>
 
     suspend fun getDetailPokemonCharacteristic(id: Int): DomainResult<String>
 
