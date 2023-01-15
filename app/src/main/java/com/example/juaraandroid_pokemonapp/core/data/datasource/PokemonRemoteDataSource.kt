@@ -16,6 +16,7 @@ interface PokemonRemoteDataSource {
 
     suspend fun getPaginationPokemon(offset: Int): DataSourceResult<List<PokemonResultsResponse>>
 
+    @kotlin.jvm.Throws(Exception::class)
     suspend fun getDetailPokemon(url: String): PokemonDetailResponse
 
     suspend fun getDetailPokemonCharacteristic(id: Int): DataSourceResult<String>
@@ -24,5 +25,5 @@ interface PokemonRemoteDataSource {
 
     suspend fun getPokemonById(id: Int): DataSourceResult<PokemonDetailResponse>
 
-    suspend fun getDetailSpeciesPokemon(url: String): PokemonSpeciesDetailResponse
+    suspend fun getDetailSpeciesPokemon(url: String): DataSourceResult<PokemonSpeciesDetailResponse>
 }

@@ -17,9 +17,9 @@ import com.example.juaraandroid_pokemonapp.core.domain.common.DataSourceResult
 import com.example.juaraandroid_pokemonapp.core.domain.common.DomainResult
 import com.example.juaraandroid_pokemonapp.core.domain.common.mapToDetail
 import com.example.juaraandroid_pokemonapp.core.domain.common.mapToSpeciesDetail
-import com.example.juaraandroid_pokemonapp.core.domain.repository.PokemonRepository
 import com.example.juaraandroid_pokemonapp.core.domain.model.PokemonDetail
 import com.example.juaraandroid_pokemonapp.core.domain.model.PokemonDetailSpecies
+import com.example.juaraandroid_pokemonapp.core.domain.repository.PokemonRepository
 import kotlinx.coroutines.flow.Flow
 import retrofit2.HttpException
 import java.io.IOException
@@ -39,12 +39,17 @@ class PokemonRepositoryImpl @Inject constructor(
     override suspend fun getPokemon(): DomainResult<List<PokemonDetail>> {
         return when (val result = remoteDataSource.getPokemon()) {
             is DataSourceResult.SourceValue -> {
-                val data = result.data.map { singleItem ->
-                    remoteDataSource.getDetailPokemon(singleItem.pokemonUrl).mapToDetail()
+                try {
+                    val data = result.data.map { singleItem ->
+                        remoteDataSource.getDetailPokemon(singleItem.pokemonUrl).mapToDetail()
+                    }
+                    if (data.isEmpty()) {
+                        DomainResult.Error(EMPTY_DATA)
+                    } else DomainResult.Content(data)
+                } catch (e: Exception) {
+                    DomainResult.Error(e.message ?: EMPTY_DATA)
                 }
-                if (data.isEmpty()) {
-                    DomainResult.Error(EMPTY_DATA)
-                } else DomainResult.Content(data)
+
             }
             is DataSourceResult.SourceError -> {
                 DomainResult.Error(result.exception.message ?: NETWORK_ERROR)
@@ -127,8 +132,15 @@ class PokemonRepositoryImpl @Inject constructor(
         return cacheDataSource.getPagination()
     }
 
-    override suspend fun getDetailSpeciesPokemon(url: String): PokemonDetailSpecies {
-        return remoteDataSource.getDetailSpeciesPokemon(url).mapToSpeciesDetail()
+    override suspend fun getDetailSpeciesPokemon(url: String): DomainResult<PokemonDetailSpecies> {
+        return when (val result = remoteDataSource.getDetailSpeciesPokemon(url)) {
+            is DataSourceResult.SourceValue -> {
+                DomainResult.Content(result.data.mapToSpeciesDetail())
+            }
+            is DataSourceResult.SourceError -> {
+                DomainResult.Error(result.exception.message ?: NETWORK_ERROR)
+            }
+        }
     }
 
     override suspend fun getDetailPokemonCharacteristic(id: Int): DomainResult<String> {
