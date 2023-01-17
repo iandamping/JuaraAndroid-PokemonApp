@@ -10,4 +10,8 @@
     <string name="small_pokemon_image_4">small pokemon image 4</string>
     <string name="type">type </string>
     <string name="ability">ability </string>
+    <string name="title_height">Height</string>
+    <string name="title_weight">Weight</string>
+    <string name="pokemon_weight">%1$s Kg</string>
+    <string name="pokemon_height">%1$s Ft</string>
 </resources>
