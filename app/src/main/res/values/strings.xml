@@ -14,4 +14,5 @@
     <string name="title_weight">Weight</string>
     <string name="pokemon_weight">%1$s Kg</string>
     <string name="pokemon_height">%1$s Ft</string>
+    <string name="no_data_available">No data available</string>
 </resources>
