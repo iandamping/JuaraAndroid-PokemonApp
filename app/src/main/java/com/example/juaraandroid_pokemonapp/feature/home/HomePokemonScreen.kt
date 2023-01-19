@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.juaraandroid_pokemonapp.feature.HomeViewModel
 
 @Composable
 fun HomePokemonScreen(

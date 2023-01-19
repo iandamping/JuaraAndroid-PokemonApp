@@ -13,14 +13,12 @@ import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkCo
 import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant.EMPTY_DATA
 import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant.NETWORK_ERROR
 import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant.POKEMON_STARTING_OFFSET
-import com.example.juaraandroid_pokemonapp.core.domain.common.DataSourceResult
-import com.example.juaraandroid_pokemonapp.core.domain.common.DomainResult
-import com.example.juaraandroid_pokemonapp.core.domain.common.mapToDetail
-import com.example.juaraandroid_pokemonapp.core.domain.common.mapToSpeciesDetail
+import com.example.juaraandroid_pokemonapp.core.domain.common.*
 import com.example.juaraandroid_pokemonapp.core.domain.model.PokemonDetail
 import com.example.juaraandroid_pokemonapp.core.domain.model.PokemonDetailSpecies
 import com.example.juaraandroid_pokemonapp.core.domain.repository.PokemonRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
@@ -59,6 +57,11 @@ class PokemonRepositoryImpl @Inject constructor(
 
     override fun getPaginationPokemonRemoteMediator(): RemoteMediator<Int, PokemonPaginationEntity> {
         return object : RemoteMediator<Int, PokemonPaginationEntity>() {
+
+            override suspend fun initialize(): InitializeAction {
+                return InitializeAction.LAUNCH_INITIAL_REFRESH
+            }
+
             override suspend fun load(
                 loadType: LoadType,
                 state: PagingState<Int, PokemonPaginationEntity>
@@ -88,23 +91,24 @@ class PokemonRepositoryImpl @Inject constructor(
                         remoteDataSource.getPaginationPokemon(page * NetworkConstant.POKEMON_OFFSET)) {
                         is DataSourceResult.SourceError -> return MediatorResult.Error(apiResponse.exception)
                         is DataSourceResult.SourceValue -> {
-                            val data = apiResponse.data.map { singleItem ->
+                            val paginationData = apiResponse.data.map { singleItem ->
                                 remoteDataSource.getDetailPokemon(singleItem.pokemonUrl)
                                     .mapToDetail()
                             }
-                            val endOfPaginationReached = data.isEmpty()
+                            val endOfPaginationReached = paginationData.isEmpty()
                             cacheDataSource.databaseTransaction {
                                 // clear all tables in the database
                                 if (loadType == LoadType.REFRESH) {
                                     with(cacheDataSource) {
                                         clearRemoteKeys()
                                         clearPagination()
+                                        clearQuiz()
                                     }
                                 }
                                 val prevKey =
                                     if (page == POKEMON_STARTING_OFFSET) null else page - 1
                                 val nextKey = if (endOfPaginationReached) null else page + 1
-                                val keys = data.map {
+                                val keys = paginationData.map {
                                     PokemonRemoteKeysEntity(
                                         pokeId = it.pokemonId,
                                         prevKey = prevKey,
@@ -113,7 +117,8 @@ class PokemonRepositoryImpl @Inject constructor(
                                 }
                                 with(cacheDataSource) {
                                     saveRemoteKeys(keys)
-                                    savePagination(data)
+                                    savePagination(paginationData)
+                                    saveQuiz(paginationData)
                                 }
                             }
                             return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
@@ -186,6 +191,10 @@ class PokemonRepositoryImpl @Inject constructor(
 
     override fun getListFavorite(): Flow<List<PokemonFavoriteEntity>> {
         return cacheDataSource.getListFavorite()
+    }
+
+    override fun getListOfQuiz(): Flow<List<PokemonDetail>> {
+        return cacheDataSource.getPokemonQuiz().map { it.mapListToDetail() }
     }
 
 

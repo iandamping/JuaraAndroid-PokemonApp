@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.PokemonDatabase
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.dao.PokemonFavoriteDao
+import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.dao.PokemonQuizDao
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.dao.PokemonRemoteKeyDao
 import com.spesolution.myapplication.core.data.datasource.cache.room.PokemonPaginationDao
 import dagger.Module
@@ -39,6 +40,11 @@ object DatabaseModule {
     @Provides
     fun providePokemonPaginationDao(db: PokemonDatabase): PokemonPaginationDao {
         return db.paginationDao()
+    }
+
+    @Provides
+    fun providePokemonQuizDao(db: PokemonDatabase): PokemonQuizDao {
+        return db.quizDao()
     }
 
 

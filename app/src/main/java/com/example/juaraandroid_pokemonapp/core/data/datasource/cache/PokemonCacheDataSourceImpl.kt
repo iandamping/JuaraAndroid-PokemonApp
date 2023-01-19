@@ -5,12 +5,15 @@ import androidx.paging.PagingState
 import androidx.room.withTransaction
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.PokemonDatabase
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.dao.PokemonFavoriteDao
+import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.dao.PokemonQuizDao
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.dao.PokemonRemoteKeyDao
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonFavoriteEntity
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonPaginationEntity
+import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonQuizEntity
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonRemoteKeysEntity
 import com.example.juaraandroid_pokemonapp.core.domain.common.mapToFavoriteDatabase
 import com.example.juaraandroid_pokemonapp.core.domain.common.mapToPaginationDatabase
+import com.example.juaraandroid_pokemonapp.core.domain.common.mapToQuizDatabase
 import com.example.juaraandroid_pokemonapp.core.domain.model.PokemonDetail
 import com.spesolution.myapplication.core.data.datasource.cache.room.PokemonPaginationDao
 import kotlinx.coroutines.flow.Flow
@@ -19,6 +22,7 @@ import javax.inject.Inject
 class PokemonCacheDataSourceImpl @Inject constructor(
     private val db: PokemonDatabase,
     private val favoriteDao: PokemonFavoriteDao,
+    private val quizDao: PokemonQuizDao,
     private val paginationDao: PokemonPaginationDao,
     private val remoteKeysDao: PokemonRemoteKeyDao
 ) : PokemonCacheDataSource {
@@ -41,12 +45,20 @@ class PokemonCacheDataSourceImpl @Inject constructor(
         remoteKeysDao.clearRemoteKeys()
     }
 
+    override suspend fun clearQuiz() {
+        quizDao.deleteAllQuizPokemon()
+    }
+
     override suspend fun saveFavorite(data: PokemonDetail) {
         favoriteDao.insertPokemon(data.mapToFavoriteDatabase())
     }
 
     override suspend fun savePagination(data: List<PokemonDetail>) {
         paginationDao.insertPokemon(*data.map { it.mapToPaginationDatabase() }.toTypedArray())
+    }
+
+    override suspend fun saveQuiz(data: List<PokemonDetail>) {
+        quizDao.insertPokemon(*data.map { it.mapToQuizDatabase() }.toTypedArray())
     }
 
     override suspend fun saveRemoteKeys(data: List<PokemonRemoteKeysEntity>) {
@@ -59,6 +71,14 @@ class PokemonCacheDataSourceImpl @Inject constructor(
 
     override fun getPagination(): PagingSource<Int, PokemonPaginationEntity> {
         return paginationDao.loadPokemon()
+    }
+
+    override fun getPokemonQuiz(): Flow<List<PokemonQuizEntity>> {
+        return quizDao.loadQuizPokemon()
+    }
+
+    override fun getSinglePokemonQuiz(id: Int): Flow<PokemonQuizEntity?> {
+        return quizDao.loadQuizPokemonById(id)
     }
 
     override suspend fun getRemoteKeys(data: Int): PokemonRemoteKeysEntity? {

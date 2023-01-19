@@ -63,19 +63,9 @@ fun ItemPokemonScreen(
                 model = ImageRequest.Builder(LocalContext.current).data(data.pokemonImage)
                     .crossfade(true)
                     .build(),
+                placeholder = painterResource(id = R.drawable.placeholder_image),
                 contentDescription = "pokemon image"
             )
-
-//            Text(
-//                modifier = Modifier.constrainAs(titleRef) {
-//                    bottom.linkTo(parent.bottom)
-//                    start.linkTo(parent.start)
-//                    end.linkTo(parent.end)
-//                },
-//                text = data.pokemonName, style = MaterialTheme.typography.subtitle1.copy(
-//                    fontFamily = LatoFontFamily, textAlign = TextAlign.Center
-//                )
-//            )
         }
 
     }

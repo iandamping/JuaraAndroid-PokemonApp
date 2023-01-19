@@ -4,6 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonFavoriteEntity
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonPaginationEntity
+import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonQuizEntity
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonRemoteKeysEntity
 import com.example.juaraandroid_pokemonapp.core.data.datasource.response.PokemonResultsResponse
 import com.example.juaraandroid_pokemonapp.core.domain.model.PokemonDetail
@@ -19,15 +20,23 @@ interface PokemonCacheDataSource {
 
     suspend fun clearRemoteKeys()
 
+    suspend fun clearQuiz()
+
     suspend fun saveFavorite(data: PokemonDetail)
 
     suspend fun savePagination(data: List<PokemonDetail>)
+
+    suspend fun saveQuiz(data: List<PokemonDetail>)
 
     suspend fun saveRemoteKeys(data: List<PokemonRemoteKeysEntity>)
 
     fun getListFavorite(): Flow<List<PokemonFavoriteEntity>>
 
     fun getPagination(): PagingSource<Int, PokemonPaginationEntity>
+
+    fun getPokemonQuiz():  Flow<List<PokemonQuizEntity>>
+
+    fun getSinglePokemonQuiz(id:Int):  Flow<PokemonQuizEntity?>
 
     suspend fun getRemoteKeys(data: Int):PokemonRemoteKeysEntity?
 
