@@ -5,6 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonFavoriteEntity
+import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonQuizEntity
 import com.example.juaraandroid_pokemonapp.core.domain.common.DomainResult
 import com.example.juaraandroid_pokemonapp.core.domain.common.mapToDetail
 import com.example.juaraandroid_pokemonapp.core.domain.model.PokemonDetail
@@ -62,6 +63,10 @@ class PokemonUseCaseImpl @Inject constructor(private val repository: PokemonRepo
 
     override fun getListFavorite(): Flow<List<PokemonFavoriteEntity>> {
         return repository.getListFavorite()
+    }
+
+    override fun getListOfQuiz(): Flow<List<PokemonDetail>> {
+        return repository.getListOfQuiz()
     }
 
 }

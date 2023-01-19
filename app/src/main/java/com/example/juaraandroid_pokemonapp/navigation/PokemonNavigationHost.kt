@@ -11,6 +11,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.juaraandroid_pokemonapp.feature.detail.DetailPokemonScreen
 import com.example.juaraandroid_pokemonapp.feature.home.HomePokemonScreen
+import com.example.juaraandroid_pokemonapp.feature.pagination.HomePaginationScreen
+import com.example.juaraandroid_pokemonapp.feature.quiz.QuizPokemonScreen
 
 @Composable
 fun PokemonNavigationHost(
@@ -22,6 +24,14 @@ fun PokemonNavigationHost(
         startDestination = PokemonNavigationScreen.HomeScreenNavigation.name,
         modifier = modifier
     ) {
+        composable(PokemonNavigationScreen.PaginationScreenNavigation.name) {
+            HomePaginationScreen(modifier = Modifier.padding(8.dp),
+                onSelectedPokemon = { id ->
+                    navController.navigate("${PokemonNavigationScreen.DetailPokemonScreenNavigation.name}/$id")
+                }
+            )
+        }
+
         composable(PokemonNavigationScreen.HomeScreenNavigation.name) {
             HomePokemonScreen(modifier = Modifier.padding(8.dp),
                 onSelectedPokemon = { id ->
@@ -29,6 +39,12 @@ fun PokemonNavigationHost(
                 }
             )
         }
+
+        composable(PokemonNavigationScreen.QuizScreenNavigation.name) {
+            QuizPokemonScreen(modifier = Modifier.padding(8.dp))
+        }
+
+
         composable(
             "${PokemonNavigationScreen.DetailPokemonScreenNavigation.name}/{${PokemonNavigationArgument.DetailPokemonId.name}}",
             arguments = listOf(navArgument(PokemonNavigationArgument.DetailPokemonId.name) {

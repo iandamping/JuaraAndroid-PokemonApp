@@ -10,13 +10,13 @@ import javax.annotation.concurrent.Immutable
  * Indonesia.
  */
 @Immutable
-data class HomeScreenState(
+data class HomePokemonState(
     val isLoading: Boolean,
     val failedMessage: String,
     val data: List<PokemonDetail>,
 ) {
     companion object {
-        fun initial() = HomeScreenState(
+        fun initial() = HomePokemonState(
             isLoading = true,
             failedMessage = "",
             data = emptyList()

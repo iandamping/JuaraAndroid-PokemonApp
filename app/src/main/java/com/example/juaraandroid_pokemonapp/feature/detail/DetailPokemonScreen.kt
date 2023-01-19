@@ -6,11 +6,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.juaraandroid_pokemonapp.R
 
 @Composable
 fun DetailPokemonScreen(
@@ -38,6 +40,7 @@ fun DetailPokemonScreen(
                         .data(state.data?.pokemonImage)
                         .crossfade(true)
                         .build(),
+                    placeholder = painterResource(id = R.drawable.placeholder_image),
                     contentDescription = "pokemon image"
                 )
                 DetailPokemonSpriteImageSection(
