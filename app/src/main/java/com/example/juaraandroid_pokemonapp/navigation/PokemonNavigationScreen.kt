@@ -1,7 +1,7 @@
 package com.example.juaraandroid_pokemonapp.navigation
 
 enum class PokemonNavigationScreen {
-    PaginationScreenNavigation,
+    SearchScreenNavigation,
     QuizScreenNavigation,
     HomeScreenNavigation,
     DetailPokemonScreenNavigation,

@@ -15,4 +15,8 @@
     <string name="pokemon_weight">%1$s Kg</string>
     <string name="pokemon_height">%1$s Ft</string>
     <string name="no_data_available">No data available</string>
+    <string name="sub_main_title">All pokemon in the world</string>
+    <string name="sub_search_title">Search your favorite pokemon</string>
+    <string name="search_pokemon">Search pokemon</string>
+    <string name="clear_search">Clear search</string>
 </resources>

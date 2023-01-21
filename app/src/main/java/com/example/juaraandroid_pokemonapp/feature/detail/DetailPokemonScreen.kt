@@ -104,7 +104,7 @@ fun DetailPokemonScreen(
                 ) {
                     Image(
                         modifier = Modifier.fillMaxWidth(),
-                        painter = painterResource(id = R.drawable.error_image),
+                        painter = painterResource(id = R.drawable.ic_no_data),
                         contentDescription = stringResource(id = R.string.no_data_available)
                     )
 
