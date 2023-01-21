@@ -1,5 +1,6 @@
 package com.example.juaraandroid_pokemonapp.navigation
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,8 +12,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.juaraandroid_pokemonapp.feature.detail.DetailPokemonScreen
 import com.example.juaraandroid_pokemonapp.feature.home.HomePokemonScreen
-import com.example.juaraandroid_pokemonapp.feature.pagination.HomePaginationScreen
 import com.example.juaraandroid_pokemonapp.feature.quiz.QuizPokemonScreen
+import com.example.juaraandroid_pokemonapp.feature.search.SearchPokemonScreen
 
 @Composable
 fun PokemonNavigationHost(
@@ -24,8 +25,10 @@ fun PokemonNavigationHost(
         startDestination = PokemonNavigationScreen.HomeScreenNavigation.name,
         modifier = modifier
     ) {
-        composable(PokemonNavigationScreen.PaginationScreenNavigation.name) {
-            HomePaginationScreen(modifier = Modifier.padding(8.dp),
+        composable(PokemonNavigationScreen.SearchScreenNavigation.name) {
+            SearchPokemonScreen(modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp),
                 onSelectedPokemon = { id ->
                     navController.navigate("${PokemonNavigationScreen.DetailPokemonScreenNavigation.name}/$id")
                 }
@@ -33,9 +36,17 @@ fun PokemonNavigationHost(
         }
 
         composable(PokemonNavigationScreen.HomeScreenNavigation.name) {
-            HomePokemonScreen(modifier = Modifier.padding(8.dp),
+            HomePokemonScreen(modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp),
                 onSelectedPokemon = { id ->
                     navController.navigate("${PokemonNavigationScreen.DetailPokemonScreenNavigation.name}/$id")
+                },
+                onIconSearchClick ={
+                    navController.navigate(PokemonNavigationScreen.SearchScreenNavigation.name)
+                },
+                onIconQuizClick = {
+                    navController.navigate(PokemonNavigationScreen.QuizScreenNavigation.name)
                 }
             )
         }

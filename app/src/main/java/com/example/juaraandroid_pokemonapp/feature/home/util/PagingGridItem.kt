@@ -1,4 +1,4 @@
-package com.example.juaraandroid_pokemonapp.feature.pagination.util
+package com.example.juaraandroid_pokemonapp.feature.home.util
 
 import android.annotation.SuppressLint
 import android.os.Parcel

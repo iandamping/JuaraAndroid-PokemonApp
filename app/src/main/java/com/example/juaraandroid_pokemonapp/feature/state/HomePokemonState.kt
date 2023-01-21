@@ -22,8 +22,4 @@ data class HomePokemonState(
             data = emptyList()
         )
     }
-
-    override fun toString(): String {
-        return "isLoading: $isLoading, data.size: ${data.size}"
-    }
 }
