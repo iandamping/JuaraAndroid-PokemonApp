@@ -20,6 +20,7 @@ import com.example.juaraandroid_pokemonapp.R
 @Composable
 fun HomeTitleSection(
     modifier: Modifier = Modifier,
+    isQuizEligibleToShown:Boolean,
     onIconSearchClick: () -> Unit,
     onIconQuizClick: () -> Unit
 ) {
@@ -44,23 +45,25 @@ fun HomeTitleSection(
             )
         }
 
-        IconButton(
-            onClick = {
-                onIconQuizClick.invoke()
-            },
-            modifier = Modifier
-                .constrainAs(iconQuizRef) {
-                    top.linkTo(parent.top)
-                    end.linkTo(iconSearchRef.start)
-                    baseline.linkTo(titleRef.baseline)
-                    height = Dimension.fillToConstraints
-                }
-        ) {
-            Icon(
-                imageVector = Icons.Default.Quiz,
-                contentDescription = "",
-                tint = Color.Black
-            )
+        if (isQuizEligibleToShown){
+            IconButton(
+                onClick = {
+                    onIconQuizClick.invoke()
+                },
+                modifier = Modifier
+                    .constrainAs(iconQuizRef) {
+                        top.linkTo(parent.top)
+                        end.linkTo(iconSearchRef.start)
+                        baseline.linkTo(titleRef.baseline)
+                        height = Dimension.fillToConstraints
+                    }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Quiz,
+                    contentDescription = "",
+                    tint = Color.Black
+                )
+            }
         }
 
         Text(

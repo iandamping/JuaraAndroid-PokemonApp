@@ -1,4 +1,4 @@
-package com.example.juaraandroid_pokemonapp.feature
+package com.example.juaraandroid_pokemonapp.feature.quiz
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

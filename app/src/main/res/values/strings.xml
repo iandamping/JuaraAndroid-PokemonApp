@@ -19,4 +19,7 @@
     <string name="sub_search_title">Search your favorite pokemon</string>
     <string name="search_pokemon">Search pokemon</string>
     <string name="clear_search">Clear search</string>
+    <string name="wrong_answer">Wrong</string>
+    <string name="correct_answer">Correct</string>
+    <string name="start_position">Start</string>
 </resources>

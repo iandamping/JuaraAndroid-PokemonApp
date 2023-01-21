@@ -1,21 +1,23 @@
 package com.example.juaraandroid_pokemonapp.feature.quiz
 
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.*
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -33,8 +35,12 @@ fun ItemQuizPokemonScreen(
     randomName: List<String>,
     pokemonName: String
 ) {
+    val density = LocalDensity.current
 
     var isAnswered by rememberSaveable {
+        mutableStateOf(false)
+    }
+    var isAnswerCorrect by rememberSaveable {
         mutableStateOf(false)
     }
 
@@ -45,7 +51,7 @@ fun ItemQuizPokemonScreen(
         elevation = 4.dp
     ) {
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-            val (imageRef, logoRef, realPokemonNameRef, firstButtonRef, middleButtonRef, lastButtonRef) = createRefs()
+            val (imageRef, logoRef, realPokemonNameRef, firstButtonRef, middleButtonRef, lastButtonRef, successAnimationRef) = createRefs()
             val imageGuideLine = createGuidelineFromTop(0.3f)
             val buttonGuideLine = createGuidelineFromBottom(0.3f)
             val realPokemonNameGuideline = createGuidelineFromBottom(0.2f)
@@ -78,6 +84,42 @@ fun ItemQuizPokemonScreen(
                 colorFilter = if (!isAnswered) ColorFilter.tint(Color.Gray) else null
             )
 
+            AnimatedVisibility(
+                modifier = Modifier.constrainAs(successAnimationRef) {
+                    top.linkTo(imageRef.bottom, 8.dp)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    centerHorizontallyTo(parent)
+                },
+                visible = isAnswered,
+                enter = slideInVertically {
+                    // Slide in from 40 dp from the top.
+                    with(density) { -40.dp.roundToPx() }
+                } + expandVertically(
+                    // Expand from the top.
+                    expandFrom = Alignment.Top
+                ) + fadeIn(
+                    // Fade in with the initial alpha of 0.3f.
+                    initialAlpha = 0.3f
+                ),
+                exit = slideOutVertically() + shrinkVertically() + fadeOut()
+
+            ) {
+
+                Button(shape = RoundedCornerShape(20.dp),
+                    onClick = {}
+                ) {
+                    Image(
+                        modifier = Modifier
+                            .size(24.dp)
+                            .padding(end = 8.dp),
+                        painter = painterResource(id = if (isAnswerCorrect) R.drawable.ic_question_correct else R.drawable.ic_question_wrong),
+                        contentDescription = "back to top"
+                    )
+                    Text(text = if (isAnswerCorrect) stringResource(R.string.correct_answer) else stringResource(R.string.wrong_answer))
+                }
+            }
+
             if (isAnswered) {
                 Text(
                     modifier = Modifier.constrainAs(realPokemonNameRef) {
@@ -106,8 +148,9 @@ fun ItemQuizPokemonScreen(
                     enabled = !isAnswered,
                     onClick = {
                         isAnswered = !isAnswered
+                        isAnswerCorrect = randomName.first() == pokemonName
                     }) {
-                    Text(text = randomName[0])
+                    Text(text = randomName.first())
                 }
                 Button(
                     modifier = Modifier.constrainAs(middleButtonRef) {
@@ -122,6 +165,7 @@ fun ItemQuizPokemonScreen(
                     enabled = !isAnswered,
                     onClick = {
                         isAnswered = !isAnswered
+                        isAnswerCorrect = randomName[1] == pokemonName
                     }) {
                     Text(text = randomName[1])
                 }
@@ -138,8 +182,9 @@ fun ItemQuizPokemonScreen(
                     enabled = !isAnswered,
                     onClick = {
                         isAnswered = !isAnswered
+                        isAnswerCorrect = randomName.last() == pokemonName
                     }) {
-                    Text(text = randomName[2])
+                    Text(text = randomName.last())
                 }
             }
 
