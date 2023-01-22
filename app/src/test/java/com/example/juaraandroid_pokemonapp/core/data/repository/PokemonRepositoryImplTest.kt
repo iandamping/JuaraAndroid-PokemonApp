@@ -95,7 +95,7 @@ class PokemonRepositoryImplTest {
             DUMMY_POKEMON_SPECIES_DETAIL
         )
         //when
-        val results = sut.getDetailSpeciesPokemon("a") as DomainResult.Content
+        val results = sut.getDetailSpeciesPokemon(1) as DomainResult.Content
         //then
         coVerify { remoteDataSource.getDetailSpeciesPokemon(any()) }
         Assert.assertEquals(
@@ -123,7 +123,7 @@ class PokemonRepositoryImplTest {
             Exception(NETWORK_ERROR)
         )
         //when
-        val results = sut.getDetailSpeciesPokemon("a") as DomainResult.Error
+        val results = sut.getDetailSpeciesPokemon(1) as DomainResult.Error
         //then
         coVerify { remoteDataSource.getDetailSpeciesPokemon(any()) }
         Assert.assertEquals(NETWORK_ERROR, results.message)

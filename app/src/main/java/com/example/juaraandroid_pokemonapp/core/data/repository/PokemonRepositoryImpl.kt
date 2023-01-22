@@ -10,8 +10,8 @@ import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entit
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonPaginationEntity
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonRemoteKeysEntity
 import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant
+import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant.DEFAULT_ERROR
 import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant.EMPTY_DATA
-import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant.NETWORK_ERROR
 import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant.POKEMON_STARTING_OFFSET
 import com.example.juaraandroid_pokemonapp.core.domain.common.*
 import com.example.juaraandroid_pokemonapp.core.domain.model.PokemonDetail
@@ -50,7 +50,7 @@ class PokemonRepositoryImpl @Inject constructor(
 
             }
             is DataSourceResult.SourceError -> {
-                DomainResult.Error(result.exception.message ?: NETWORK_ERROR)
+                DomainResult.Error("$DEFAULT_ERROR ${result.exception.message}")
             }
         }
     }
@@ -137,13 +137,13 @@ class PokemonRepositoryImpl @Inject constructor(
         return cacheDataSource.getPagination()
     }
 
-    override suspend fun getDetailSpeciesPokemon(url: String): DomainResult<PokemonDetailSpecies> {
-        return when (val result = remoteDataSource.getDetailSpeciesPokemon(url)) {
+    override suspend fun getDetailSpeciesPokemon(id: Int): DomainResult<PokemonDetailSpecies> {
+        return when (val result = remoteDataSource.getDetailSpeciesPokemon(id)) {
             is DataSourceResult.SourceValue -> {
                 DomainResult.Content(result.data.mapToSpeciesDetail())
             }
             is DataSourceResult.SourceError -> {
-                DomainResult.Error(result.exception.message ?: NETWORK_ERROR)
+                DomainResult.Error("$DEFAULT_ERROR ${result.exception.message}")
             }
         }
     }
@@ -154,7 +154,7 @@ class PokemonRepositoryImpl @Inject constructor(
                 DomainResult.Content(result.data)
             }
             is DataSourceResult.SourceError -> {
-                DomainResult.Error(result.exception.message ?: NETWORK_ERROR)
+                DomainResult.Error("$DEFAULT_ERROR ${result.exception.message}")
             }
         }
     }
@@ -165,7 +165,7 @@ class PokemonRepositoryImpl @Inject constructor(
                 DomainResult.Content(result.data)
             }
             is DataSourceResult.SourceError -> {
-                DomainResult.Error(result.exception.message ?: NETWORK_ERROR)
+                DomainResult.Error("$DEFAULT_ERROR ${result.exception.message}")
             }
         }
     }
@@ -176,7 +176,7 @@ class PokemonRepositoryImpl @Inject constructor(
                 DomainResult.Content(result.data.mapToDetail())
             }
             is DataSourceResult.SourceError -> {
-                DomainResult.Error(result.exception.message ?: NETWORK_ERROR)
+                DomainResult.Error("$DEFAULT_ERROR ${result.exception.message}")
             }
         }
     }

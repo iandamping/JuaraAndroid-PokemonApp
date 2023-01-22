@@ -270,7 +270,7 @@ class PokemonRemoteDataSourceImplTest {
             DUMMY_POKEMON_SPECIES_DETAIL
         )
         //when
-        val results = sut.getDetailSpeciesPokemon("a") as DataSourceResult.SourceValue
+        val results = sut.getDetailSpeciesPokemon(1) as DataSourceResult.SourceValue
         //then
         coVerify { api.getPokemonSpecies(any()) }
         Assert.assertEquals(DUMMY_POKEMON_SPECIES_DETAIL, results.data)
@@ -279,8 +279,8 @@ class PokemonRemoteDataSourceImplTest {
             results.data.pokemonCaptureRate
         )
         Assert.assertEquals(
-            DUMMY_POKEMON_SPECIES_DETAIL.pokemonHappines,
-            results.data.pokemonHappines
+            DUMMY_POKEMON_SPECIES_DETAIL.pokemonHappiness,
+            results.data.pokemonHappiness
         )
         Assert.assertEquals(
             DUMMY_POKEMON_SPECIES_DETAIL.pokemonColor.pokemonColor,
@@ -305,7 +305,7 @@ class PokemonRemoteDataSourceImplTest {
             IOException(NETWORK_ERROR)
         )
         //when
-        val results = sut.getDetailSpeciesPokemon("a") as DataSourceResult.SourceError
+        val results = sut.getDetailSpeciesPokemon(1) as DataSourceResult.SourceError
         //then
         coVerify { api.getPokemonSpecies(any()) }
 

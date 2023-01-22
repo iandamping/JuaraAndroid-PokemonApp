@@ -10,7 +10,7 @@ import com.squareup.moshi.Json
  */
 
 data class PokemonSpeciesDetailResponse(
-    @Json(name = "base_happiness") val pokemonHappines: Int,
+    @Json(name = "base_happiness") val pokemonHappiness: Int,
     @Json(name = "capture_rate") val pokemonCaptureRate: Int,
     @Json(name = "color") val pokemonColor: PokemonSpeciesColorResponse,
     @Json(name = "egg_groups") val pokemonEggGroup: List<PokemonSpeciesEggGroupResponse>,

@@ -25,5 +25,5 @@ interface PokemonRemoteDataSource {
 
     suspend fun getPokemonById(id: Int): DataSourceResult<PokemonDetailResponse>
 
-    suspend fun getDetailSpeciesPokemon(url: String): DataSourceResult<PokemonSpeciesDetailResponse>
+    suspend fun getDetailSpeciesPokemon(id: Int): DataSourceResult<PokemonSpeciesDetailResponse>
 }

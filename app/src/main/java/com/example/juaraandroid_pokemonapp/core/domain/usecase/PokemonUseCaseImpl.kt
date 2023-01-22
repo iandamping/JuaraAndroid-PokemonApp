@@ -37,8 +37,8 @@ class PokemonUseCaseImpl @Inject constructor(private val repository: PokemonRepo
         }
     }
 
-    override suspend fun getDetailSpeciesPokemon(url: String): DomainResult<PokemonDetailSpecies> {
-        return repository.getDetailSpeciesPokemon(url = url)
+    override suspend fun getDetailSpeciesPokemon(id: Int): DomainResult<PokemonDetailSpecies> {
+        return repository.getDetailSpeciesPokemon(id)
     }
 
     override suspend fun getDetailPokemonCharacteristic(id: Int): DomainResult<String> {

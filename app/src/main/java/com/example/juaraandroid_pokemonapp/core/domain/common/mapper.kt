@@ -129,7 +129,7 @@ fun List<PokemonAbilitiesResponse>.checkAbilitiesList(size: Int, position: Int):
     } else ONE_SKILL_MONS
 
 fun PokemonSpeciesDetailResponse.mapToSpeciesDetail(): PokemonDetailSpecies = PokemonDetailSpecies(
-    happines = pokemonHappines,
+    happiness = pokemonHappiness,
     captureRate = pokemonCaptureRate,
     color = pokemonColor.pokemonColor,
     eggGroup1 = pokemonEggGroup[0].eggName,

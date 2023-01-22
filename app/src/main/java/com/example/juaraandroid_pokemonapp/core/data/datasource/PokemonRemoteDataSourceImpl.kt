@@ -8,6 +8,7 @@ import com.example.juaraandroid_pokemonapp.core.data.datasource.response.Pokemon
 import com.example.juaraandroid_pokemonapp.core.data.datasource.response.PokemonSpeciesDetailResponse
 import com.example.juaraandroid_pokemonapp.core.domain.common.ApiResult
 import com.example.juaraandroid_pokemonapp.core.domain.common.DataSourceResult
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -49,7 +50,10 @@ class PokemonRemoteDataSourceImpl @Inject constructor(
     override suspend fun getDetailPokemonCharacteristic(id: Int): DataSourceResult<String> {
         return when (val response = oneShotCalls(api.getPokemonCharacteristic(id))) {
             is ApiResult.Error -> DataSourceResult.SourceError(response.exception)
-            is ApiResult.Success -> DataSourceResult.SourceValue(response.data.descriptions[0].description)
+            is ApiResult.Success -> {
+                val position = response.data.descriptions.indexOfFirst { it.language.name == "en" }
+                DataSourceResult.SourceValue(response.data.descriptions[position].description)
+            }
         }
     }
 
@@ -71,9 +75,8 @@ class PokemonRemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    @kotlin.jvm.Throws(Exception::class)
-    override suspend fun getDetailSpeciesPokemon(url: String): DataSourceResult<PokemonSpeciesDetailResponse> {
-        return when (val response = oneShotCalls(api.getPokemonSpecies(url))) {
+    override suspend fun getDetailSpeciesPokemon(id: Int): DataSourceResult<PokemonSpeciesDetailResponse> {
+        return when (val response = oneShotCalls(api.getPokemonSpecies(id))) {
             is ApiResult.Error -> DataSourceResult.SourceError(response.exception)
             is ApiResult.Success -> DataSourceResult.SourceValue(response.data)
         }

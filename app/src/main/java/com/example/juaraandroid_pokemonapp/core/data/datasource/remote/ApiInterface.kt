@@ -35,6 +35,6 @@ interface ApiInterface {
     @GET("$GET_POKEMON/{id}")
     suspend fun getPokemonById(@Path("id") id: Int): Response<PokemonDetailResponse>
 
-    @GET
-    suspend fun getPokemonSpecies(@Url url: String): Response<PokemonSpeciesDetailResponse>
+    @GET("${NetworkConstant.GET_POKEMON_SPECIES}/{id}")
+    suspend fun getPokemonSpecies(@Path("id") id: Int): Response<PokemonSpeciesDetailResponse>
 }

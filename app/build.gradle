@@ -37,6 +37,7 @@ android {
                              "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
                              "-opt-in=kotlinx.coroutines.FlowPreview",
                              "-opt-in=androidx.paging.ExperimentalPagingApi",
+                             "-opt-in=com.google.accompanist.pager.ExperimentalPagerApi",
                              "-opt-in=kotlin.Experimental"]
     }
     buildFeatures {
@@ -91,6 +92,10 @@ dependencies {
     implementation 'androidx.compose.material3:material3-window-size-class'
     // optional - Jetpack Compose integration
     implementation "androidx.paging:paging-compose:1.0.0-alpha17"
+    //jetpack compose pager
+    implementation "com.google.accompanist:accompanist-pager:0.25.0" // Pager
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.25.0" // Pager Indicators
+
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation "io.mockk:mockk:1.12.4"
