@@ -9,11 +9,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.example.juaraandroid_pokemonapp.R
-import com.example.juaraandroid_pokemonapp.feature.state.DetailPokemonStatState
+import com.example.juaraandroid_pokemonapp.feature.state.DetailPokemonSpeciesState
 import com.example.juaraandroid_pokemonapp.theme.LatoFontFamily
+import com.example.juaraandroid_pokemonapp.util.PokemonConstant
 
 @Composable
-fun DetailPokemonStatSection(modifier: Modifier = Modifier, data: DetailPokemonStatState) {
+fun DetailPokemonSpeciesSection(modifier: Modifier = Modifier, data: DetailPokemonSpeciesState) {
     Column(modifier = modifier) {
         when {
             data.data != null -> {
@@ -22,7 +23,7 @@ fun DetailPokemonStatSection(modifier: Modifier = Modifier, data: DetailPokemonS
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "${data.data.pokemonStat0.name} :",
+                        text = stringResource(R.string.generation_name),
                         style = MaterialTheme.typography.subtitle1.copy(
                             fontFamily = LatoFontFamily,
                             fontWeight = FontWeight.Bold
@@ -31,7 +32,7 @@ fun DetailPokemonStatSection(modifier: Modifier = Modifier, data: DetailPokemonS
                             .wrapContentWidth(Alignment.Start)
                     )
                     Text(
-                        text = data.data.pokemonStat0.point.toString(),
+                        text = data.data.generation,
                         modifier = modifier
                             .wrapContentWidth(Alignment.End)
                     )
@@ -42,7 +43,7 @@ fun DetailPokemonStatSection(modifier: Modifier = Modifier, data: DetailPokemonS
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "${data.data.pokemonStat1.name} :",
+                        text = stringResource(R.string.dominant_color),
                         style = MaterialTheme.typography.subtitle1.copy(
                             fontFamily = LatoFontFamily,
                             fontWeight = FontWeight.Bold
@@ -51,7 +52,7 @@ fun DetailPokemonStatSection(modifier: Modifier = Modifier, data: DetailPokemonS
                             .wrapContentWidth(Alignment.Start)
                     )
                     Text(
-                        text = data.data.pokemonStat1.point.toString(),
+                        text = data.data.color,
                         modifier = modifier
                             .wrapContentWidth(Alignment.End)
                     )
@@ -62,7 +63,7 @@ fun DetailPokemonStatSection(modifier: Modifier = Modifier, data: DetailPokemonS
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "${data.data.pokemonStat2.name} :",
+                        text = stringResource(R.string.pokemon_shape),
                         style = MaterialTheme.typography.subtitle1.copy(
                             fontFamily = LatoFontFamily,
                             fontWeight = FontWeight.Bold
@@ -71,7 +72,7 @@ fun DetailPokemonStatSection(modifier: Modifier = Modifier, data: DetailPokemonS
                             .wrapContentWidth(Alignment.Start)
                     )
                     Text(
-                        text = data.data.pokemonStat2.point.toString(),
+                        text = data.data.shape,
                         modifier = modifier
                             .wrapContentWidth(Alignment.End)
                     )
@@ -82,19 +83,17 @@ fun DetailPokemonStatSection(modifier: Modifier = Modifier, data: DetailPokemonS
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "${data.data.pokemonStat3.name} :",
+                        text = stringResource(R.string.growth_rate),
                         style = MaterialTheme.typography.subtitle1.copy(
                             fontFamily = LatoFontFamily,
                             fontWeight = FontWeight.Bold
                         ),
                         modifier = modifier
-
                             .wrapContentWidth(Alignment.Start)
                     )
                     Text(
-                        text = data.data.pokemonStat3.point.toString(),
+                        text = data.data.growthRate,
                         modifier = modifier
-
                             .wrapContentWidth(Alignment.End)
                     )
                 }
@@ -104,19 +103,17 @@ fun DetailPokemonStatSection(modifier: Modifier = Modifier, data: DetailPokemonS
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "${data.data.pokemonStat4.name} :",
+                        text = stringResource(R.string.happiness_name),
                         style = MaterialTheme.typography.subtitle1.copy(
                             fontFamily = LatoFontFamily,
                             fontWeight = FontWeight.Bold
                         ),
                         modifier = modifier
-
                             .wrapContentWidth(Alignment.Start)
                     )
                     Text(
-                        text = data.data.pokemonStat4.point.toString(),
+                        text = data.data.happiness.toString(),
                         modifier = modifier
-
                             .wrapContentWidth(Alignment.End)
                     )
                 }
@@ -126,30 +123,87 @@ fun DetailPokemonStatSection(modifier: Modifier = Modifier, data: DetailPokemonS
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "${data.data.pokemonStat5.name} :",
+                        text = stringResource(R.string.capture_rate),
                         style = MaterialTheme.typography.subtitle1.copy(
                             fontFamily = LatoFontFamily,
                             fontWeight = FontWeight.Bold
                         ),
                         modifier = modifier
-
                             .wrapContentWidth(Alignment.Start)
                     )
                     Text(
-                        text = data.data.pokemonStat5.point.toString(),
+                        text = "${data.data.captureRate} %",
                         modifier = modifier
-
                             .wrapContentWidth(Alignment.End)
                     )
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = stringResource(R.string.habitat_name),
+                        style = MaterialTheme.typography.subtitle1.copy(
+                            fontFamily = LatoFontFamily,
+                            fontWeight = FontWeight.Bold
+                        ),
+                        modifier = modifier
+                            .wrapContentWidth(Alignment.Start)
+                    )
+                    Text(
+                        text = data.data.habitat,
+                        modifier = modifier
+                            .wrapContentWidth(Alignment.End)
+                    )
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = stringResource(R.string.egg_group),
+                        style = MaterialTheme.typography.subtitle1.copy(
+                            fontFamily = LatoFontFamily,
+                            fontWeight = FontWeight.Bold
+                        ),
+                        modifier = modifier
+                            .wrapContentWidth(Alignment.Start)
+                    )
+                    Text(
+                        text = data.data.eggGroup1,
+                        modifier = modifier
+                            .wrapContentWidth(Alignment.End)
+                    )
+                }
+
+                if (data.data.eggGroup2 != PokemonConstant.ONE_EGG_MONS) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = "",
+                            modifier = modifier
+                                .wrapContentWidth(Alignment.Start)
+                        )
+                        Text(
+                            text = data.data.eggGroup2,
+                            modifier = modifier
+                                .wrapContentWidth(Alignment.End)
+                        )
+                    }
                 }
             }
+
             data.failedMessage.isNotEmpty() -> {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = stringResource(id = R.string.stat_name),
+                        text = stringResource(R.string.pokemon_species_name),
                         style = MaterialTheme.typography.subtitle1.copy(
                             fontFamily = LatoFontFamily,
                             fontWeight = FontWeight.Bold
@@ -165,7 +219,6 @@ fun DetailPokemonStatSection(modifier: Modifier = Modifier, data: DetailPokemonS
                 }
             }
         }
-
-
     }
+
 }

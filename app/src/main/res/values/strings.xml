@@ -10,8 +10,8 @@
     <string name="small_pokemon_image_4">small pokemon image 4</string>
     <string name="type">type </string>
     <string name="ability">ability </string>
-    <string name="title_height">Height</string>
-    <string name="title_weight">Weight</string>
+    <string name="title_height">Height :</string>
+    <string name="title_weight">Weight :</string>
     <string name="pokemon_weight">%1$s Kg</string>
     <string name="pokemon_height">%1$s Ft</string>
     <string name="no_data_available">No data available</string>
@@ -22,4 +22,20 @@
     <string name="wrong_answer">Wrong</string>
     <string name="correct_answer">Correct</string>
     <string name="start_position">Start</string>
+    <string name="bio_name">Name :</string>
+    <string name="stat_name">Stat :</string>
+    <string name="generation_name">Generation :</string>
+    <string name="dominant_color">Dominant Color :</string>
+    <string name="pokemon_shape">Pokemon Shape :</string>
+    <string name="growth_rate">Growth Rate :</string>
+    <string name="happiness_name">Happiness :</string>
+    <string name="capture_rate">Capture rate :</string>
+    <string name="habitat_name">Habitat :</string>
+    <string name="egg_group">Egg group :</string>
+    <string name="pokemon_species_name">Pokemon Species :</string>
+    <string name="characteristic_name">Characteristic :</string>
+    <string name="type_name">Type :</string>
+    <string name="ability_name">Ability :</string>
+    <string name="pokemon_type_name">Pokemon Type :</string>
+    <string name="encounters_name">Encounters :</string>
 </resources>

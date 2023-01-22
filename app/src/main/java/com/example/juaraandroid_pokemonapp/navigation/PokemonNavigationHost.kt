@@ -62,7 +62,7 @@ fun PokemonNavigationHost(
                 type = NavType.IntType
             })
         ) {
-            DetailPokemonScreen(modifier = Modifier.padding(8.dp))
+            DetailPokemonScreen(modifier = Modifier.fillMaxSize().padding(8.dp))
         }
     }
 }

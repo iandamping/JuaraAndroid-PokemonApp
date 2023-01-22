@@ -24,7 +24,7 @@ interface PokemonRepository {
 
     fun getPaginationPokemonPagingSource(): PagingSource<Int, PokemonPaginationEntity>
 
-    suspend fun getDetailSpeciesPokemon(url: String): DomainResult<PokemonDetailSpecies>
+    suspend fun getDetailSpeciesPokemon(id: Int): DomainResult<PokemonDetailSpecies>
 
     suspend fun getDetailPokemonCharacteristic(id: Int): DomainResult<String>
 

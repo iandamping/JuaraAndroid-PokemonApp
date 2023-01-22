@@ -6,7 +6,7 @@ package com.example.juaraandroid_pokemonapp.core.domain.model
  * Indonesia.
  */
 data class PokemonDetailSpecies(
-    val happines: Int,
+    val happiness: Int,
     val captureRate: Int,
     val color: String,
     val eggGroup1: String,
