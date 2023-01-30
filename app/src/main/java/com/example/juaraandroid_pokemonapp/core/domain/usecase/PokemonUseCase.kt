@@ -1,8 +1,6 @@
 package com.example.juaraandroid_pokemonapp.core.domain.usecase
 
 import androidx.paging.PagingData
-import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonFavoriteEntity
-import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonQuizEntity
 import com.example.juaraandroid_pokemonapp.core.domain.common.DomainResult
 import com.example.juaraandroid_pokemonapp.core.domain.model.PokemonDetail
 import com.example.juaraandroid_pokemonapp.core.domain.model.PokemonDetailSpecies
@@ -27,11 +25,5 @@ interface PokemonUseCase {
 
     suspend fun getPokemonById(id: Int): DomainResult<PokemonDetail>
 
-    suspend fun saveFavorite(data: PokemonDetail)
-
-    suspend fun clearFavorite(id: Int)
-
-    fun getListFavorite(): Flow<List<PokemonFavoriteEntity>>
-
-    fun getListOfQuiz():Flow<List<PokemonDetail>>
+    fun getListOfQuiz(): Flow<List<PokemonDetail>>
 }

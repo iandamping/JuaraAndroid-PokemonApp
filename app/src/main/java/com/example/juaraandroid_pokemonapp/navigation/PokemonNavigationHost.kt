@@ -42,7 +42,7 @@ fun PokemonNavigationHost(
                 onSelectedPokemon = { id ->
                     navController.navigate("${PokemonNavigationScreen.DetailPokemonScreenNavigation.name}/$id")
                 },
-                onIconSearchClick ={
+                onIconSearchClick = {
                     navController.navigate(PokemonNavigationScreen.SearchScreenNavigation.name)
                 },
                 onIconQuizClick = {
@@ -52,7 +52,9 @@ fun PokemonNavigationHost(
         }
 
         composable(PokemonNavigationScreen.QuizScreenNavigation.name) {
-            QuizPokemonScreen(modifier = Modifier.padding(8.dp))
+            QuizPokemonScreen(modifier = Modifier.padding(8.dp)) { id ->
+                navController.navigate("${PokemonNavigationScreen.DetailPokemonScreenNavigation.name}/$id")
+            }
         }
 
 
@@ -62,7 +64,7 @@ fun PokemonNavigationHost(
                 type = NavType.IntType
             })
         ) {
-            DetailPokemonScreen(modifier = Modifier.fillMaxSize().padding(8.dp))
+            DetailPokemonScreen(modifier = Modifier.fillMaxSize())
         }
     }
 }

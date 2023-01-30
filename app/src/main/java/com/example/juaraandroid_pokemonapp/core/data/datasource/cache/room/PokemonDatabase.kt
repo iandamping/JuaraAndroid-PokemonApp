@@ -2,10 +2,8 @@ package com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.dao.PokemonFavoriteDao
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.dao.PokemonQuizDao
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.dao.PokemonRemoteKeyDao
-import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonFavoriteEntity
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonPaginationEntity
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonQuizEntity
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonRemoteKeysEntity
@@ -18,7 +16,6 @@ import com.spesolution.myapplication.core.data.datasource.cache.room.PokemonPagi
  */
 @Database(
     entities = [PokemonPaginationEntity::class,
-        PokemonFavoriteEntity::class,
         PokemonRemoteKeysEntity::class,
         PokemonQuizEntity::class],
     version = 1,
@@ -27,8 +24,6 @@ import com.spesolution.myapplication.core.data.datasource.cache.room.PokemonPagi
 abstract class PokemonDatabase : RoomDatabase() {
 
     abstract fun paginationDao(): PokemonPaginationDao
-
-    abstract fun favoriteDao(): PokemonFavoriteDao
 
     abstract fun remoteKeyDao(): PokemonRemoteKeyDao
 

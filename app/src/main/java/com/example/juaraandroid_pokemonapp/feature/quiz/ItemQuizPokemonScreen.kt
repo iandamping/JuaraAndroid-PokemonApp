@@ -2,6 +2,7 @@ package com.example.juaraandroid_pokemonapp.feature.quiz
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -31,9 +32,11 @@ import com.example.juaraandroid_pokemonapp.theme.LatoFontFamily
 @Composable
 fun ItemQuizPokemonScreen(
     modifier: Modifier = Modifier,
+    pokemonId:Int,
     pokemonImage: String,
     randomName: List<String>,
-    pokemonName: String
+    pokemonName: String,
+    onDetailScreenIsClicked: (Int) -> Unit
 ) {
     val density = LocalDensity.current
 
@@ -47,7 +50,10 @@ fun ItemQuizPokemonScreen(
     Card(
         modifier = modifier
             .width(width = 300.dp)
-            .wrapContentHeight(),
+            .wrapContentHeight()
+            .clickable(isAnswered) {
+                onDetailScreenIsClicked.invoke(pokemonId)
+            },
         elevation = 4.dp
     ) {
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
@@ -116,7 +122,11 @@ fun ItemQuizPokemonScreen(
                         painter = painterResource(id = if (isAnswerCorrect) R.drawable.ic_question_correct else R.drawable.ic_question_wrong),
                         contentDescription = "back to top"
                     )
-                    Text(text = if (isAnswerCorrect) stringResource(R.string.correct_answer) else stringResource(R.string.wrong_answer))
+                    Text(
+                        text = if (isAnswerCorrect) stringResource(R.string.correct_answer) else stringResource(
+                            R.string.wrong_answer
+                        )
+                    )
                 }
             }
 

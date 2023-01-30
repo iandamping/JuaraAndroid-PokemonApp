@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -42,7 +43,7 @@ fun DetailPokemonScreen(
         ConstraintLayout(modifier = modifier.padding(paddingValues)) {
 
 
-            val (imageRef, spriteImageRef, bioRef, statSectionRef, typeSectionRef, errorHandlingRef, tabsRef, tabContentRef) = createRefs()
+            val (imageRef, spriteImageRef, errorHandlingRef, tabsRef, tabContentRef) = createRefs()
             val imageGuideLine = createGuidelineFromTop(0.3f)
 
             when {
@@ -98,47 +99,8 @@ fun DetailPokemonScreen(
                         end.linkTo(parent.end)
                         width = Dimension.fillToConstraints
                         height = Dimension.wrapContent
-                    }, tabs = tabs, pagerState = pagerState)
+                    }.padding(8.dp), tabs = tabs, pagerState = pagerState)
 
-//                    Column(modifier = Modifier.padding(paddingValues)) {
-//                        TabScreen(tabs = tabs, pagerState = pagerState)
-//                        TabsContent(tabs = tabs, pagerState = pagerState)
-//                    }
-
-
-                    ///old screen position
-//                    DetailPokemonBioSection(
-//                        modifier = Modifier
-//                            .constrainAs(bioRef) {
-//                                top.linkTo(spriteImageRef.bottom)
-//                                start.linkTo(parent.start)
-//                                end.linkTo(parent.end)
-//                                width = Dimension.fillToConstraints
-//                                height = Dimension.wrapContent
-//                            }, pokemonItem = state.data!!
-//                    )
-
-//                    DetailPokemonStatSection(
-//                        modifier = Modifier
-//                            .constrainAs(statSectionRef) {
-//                                top.linkTo(bioRef.bottom)
-//                                start.linkTo(parent.start)
-//                                end.linkTo(parent.end)
-//                                width = Dimension.fillToConstraints
-//                                height = Dimension.wrapContent
-//                            }, pokemonItem = state.data!!
-//                    )
-
-//                    DetailPokemonTypeSection(
-//                        modifier = Modifier
-//                            .constrainAs(typeSectionRef) {
-//                                top.linkTo(statSectionRef.bottom)
-//                                start.linkTo(parent.start)
-//                                end.linkTo(parent.end)
-//                                width = Dimension.fillToConstraints
-//                                height = Dimension.wrapContent
-//                            }, pokemonItem = state.data!!
-//                    )
                 }
                 statState.failedMessage.isNotEmpty() -> {
                     Column(

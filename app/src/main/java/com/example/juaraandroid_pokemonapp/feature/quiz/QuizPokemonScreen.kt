@@ -2,6 +2,7 @@ package com.example.juaraandroid_pokemonapp.feature.quiz
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -29,6 +30,7 @@ import kotlinx.coroutines.launch
 fun QuizPokemonScreen(
     modifier: Modifier = Modifier,
     viewModel: PokemonQuizViewModel = hiltViewModel(),
+    onDetailScreenIsClicked: (Int) -> Unit
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -51,6 +53,7 @@ fun QuizPokemonScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     contentPadding = PaddingValues(4.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    flingBehavior = rememberSnapFlingBehavior(scrollState),
                     state = scrollState
                 ) {
                     items(items = state.data, key = { key -> key.pokemonId }) { pokemonItem ->
@@ -61,9 +64,13 @@ fun QuizPokemonScreen(
                         randomName.add(pokemonItem.pokemonName)
 
                         ItemQuizPokemonScreen(
+                            pokemonId = pokemonItem.pokemonId,
                             pokemonImage = pokemonItem.pokemonImage,
                             randomName = randomName,
-                            pokemonName = pokemonItem.pokemonName
+                            pokemonName = pokemonItem.pokemonName,
+                            onDetailScreenIsClicked = { selectedId ->
+                                onDetailScreenIsClicked.invoke(selectedId)
+                            }
                         )
                     }
                 }
