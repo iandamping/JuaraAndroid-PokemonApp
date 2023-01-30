@@ -3,9 +3,7 @@ package com.example.juaraandroid_pokemonapp.feature.detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonFavoriteEntity
 import com.example.juaraandroid_pokemonapp.core.domain.common.DomainResult
-import com.example.juaraandroid_pokemonapp.core.domain.model.PokemonDetail
 import com.example.juaraandroid_pokemonapp.core.domain.usecase.PokemonUseCase
 import com.example.juaraandroid_pokemonapp.feature.state.DetailPokemonAreaState
 import com.example.juaraandroid_pokemonapp.feature.state.DetailPokemonCharacteristicState
@@ -14,7 +12,10 @@ import com.example.juaraandroid_pokemonapp.feature.state.DetailPokemonStatState
 import com.example.juaraandroid_pokemonapp.navigation.PokemonNavigationArgument
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -44,16 +45,6 @@ class DetailViewModel @Inject constructor(
     private val _detailSpeciesState: MutableStateFlow<DetailPokemonSpeciesState> =
         MutableStateFlow(DetailPokemonSpeciesState.initial())
     val detailSpeciesState: StateFlow<DetailPokemonSpeciesState> = _detailSpeciesState.asStateFlow()
-
-
-    private val _bookmarkState = MutableStateFlow(false)
-    val bookmarkState = _bookmarkState.asStateFlow()
-
-    fun listFavorite(): Flow<List<PokemonFavoriteEntity>> = useCase.getListFavorite()
-
-    fun setBookmarkState(data: Boolean) {
-        _bookmarkState.value = data
-    }
 
     init {
         viewModelScope.launch {
@@ -108,18 +99,6 @@ class DetailViewModel @Inject constructor(
             is DomainResult.Error -> _detailSpeciesState.update { currentUiState ->
                 currentUiState.copy(isLoading = false, failedMessage = data.message)
             }
-        }
-    }
-
-    fun saveFavorite(data: PokemonDetail) {
-        viewModelScope.launch {
-            useCase.saveFavorite(data)
-        }
-    }
-
-    fun clearFavorite(id: Int) {
-        viewModelScope.launch {
-            useCase.clearFavorite(id)
         }
     }
 

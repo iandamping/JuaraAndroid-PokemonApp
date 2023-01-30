@@ -4,8 +4,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonFavoriteEntity
-import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonQuizEntity
 import com.example.juaraandroid_pokemonapp.core.domain.common.DomainResult
 import com.example.juaraandroid_pokemonapp.core.domain.common.mapToDetail
 import com.example.juaraandroid_pokemonapp.core.domain.model.PokemonDetail
@@ -51,18 +49,6 @@ class PokemonUseCaseImpl @Inject constructor(private val repository: PokemonRepo
 
     override suspend fun getPokemonById(id: Int): DomainResult<PokemonDetail> {
         return repository.getPokemonById(id)
-    }
-
-    override suspend fun saveFavorite(data: PokemonDetail) {
-        repository.saveFavorite(data)
-    }
-
-    override suspend fun clearFavorite(id: Int) {
-        repository.clearFavorite(id)
-    }
-
-    override fun getListFavorite(): Flow<List<PokemonFavoriteEntity>> {
-        return repository.getListFavorite()
     }
 
     override fun getListOfQuiz(): Flow<List<PokemonDetail>> {

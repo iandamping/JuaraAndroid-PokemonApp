@@ -1,6 +1,5 @@
 package com.example.juaraandroid_pokemonapp.core.domain.common
 
-import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonFavoriteEntity
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonPaginationEntity
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonQuizEntity
 import com.example.juaraandroid_pokemonapp.core.data.datasource.response.*
@@ -145,37 +144,6 @@ fun List<PokemonSpeciesEggGroupResponse>.checkEggGroupList(size: Int, position: 
         this[position].eggName
     } else ONE_EGG_MONS
 
-fun PokemonDetail.mapToFavoriteDatabase(): PokemonFavoriteEntity = PokemonFavoriteEntity(
-    pokemonFavoriteId = null,
-    pokemonId = pokemonId,
-    pokemonWeight = pokemonWeight,
-    pokemonHeight = pokemonHeight,
-    pokemonName = pokemonName,
-    pokemonImage = pokemonImage,
-    pokemonSmallImage1 = pokemonSmallImage1,
-    pokemonSmallImage2 = pokemonSmallImage2,
-    pokemonSmallImage3 = pokemonSmallImage3,
-    pokemonSmallImage4 = pokemonSmallImage4,
-    pokemonStatName0 = pokemonStat0.name,
-    pokemonStatName1 = pokemonStat1.name,
-    pokemonStatName2 = pokemonStat2.name,
-    pokemonStatName3 = pokemonStat3.name,
-    pokemonStatName4 = pokemonStat4.name,
-    pokemonStatName5 = pokemonStat5.name,
-    pokemonStatPoint0 = pokemonStat0.point,
-    pokemonStatPoint1 = pokemonStat1.point,
-    pokemonStatPoint2 = pokemonStat2.point,
-    pokemonStatPoint3 = pokemonStat3.point,
-    pokemonStatPoint4 = pokemonStat4.point,
-    pokemonStatPoint5 = pokemonStat5.point,
-    pokemonType0 = pokemonType0,
-    pokemonType1 = pokemonType1,
-    pokemonAbility1 = pokemonAbility1,
-    pokemonAbility2 = pokemonAbility2,
-    pokemonSpeciesUrl = pokemonSpeciesUrl
-)
-
-
 fun PokemonDetail.mapToPaginationDatabase(): PokemonPaginationEntity = PokemonPaginationEntity(
     pokemonId = pokemonId,
     pokemonWeight = pokemonWeight,
@@ -233,29 +201,5 @@ fun PokemonDetail.mapToQuizDatabase(): PokemonQuizEntity = PokemonQuizEntity(
     pokemonType1 = pokemonType1,
     pokemonAbility1 = pokemonAbility1,
     pokemonAbility2 = pokemonAbility2,
-    pokemonSpeciesUrl = pokemonSpeciesUrl
-)
-
-
-fun PokemonFavoriteEntity.mapToFavorite(): PokemonDetail = PokemonDetail(
-    pokemonId = pokemonId,
-    pokemonWeight = pokemonWeight,
-    pokemonHeight = pokemonHeight,
-    pokemonName = pokemonName,
-    pokemonImage = pokemonImage,
-    pokemonSmallImage1 = pokemonSmallImage1,
-    pokemonSmallImage2 = pokemonSmallImage2,
-    pokemonSmallImage3 = pokemonSmallImage3,
-    pokemonSmallImage4 = pokemonSmallImage4,
-    pokemonStat0 = PokemonStat(pokemonStatPoint0, pokemonStatName0),
-    pokemonStat1 = PokemonStat(pokemonStatPoint0, pokemonStatName0),
-    pokemonStat2 = PokemonStat(pokemonStatPoint0, pokemonStatName0),
-    pokemonStat3 = PokemonStat(pokemonStatPoint0, pokemonStatName0),
-    pokemonStat4 = PokemonStat(pokemonStatPoint0, pokemonStatName0),
-    pokemonStat5 = PokemonStat(pokemonStatPoint0, pokemonStatName0),
-    pokemonType0 = pokemonType0,
-    pokemonType1 = pokemonType1 ?: "",
-    pokemonAbility1 = pokemonAbility1,
-    pokemonAbility2 = pokemonAbility2 ?: "",
     pokemonSpeciesUrl = pokemonSpeciesUrl
 )

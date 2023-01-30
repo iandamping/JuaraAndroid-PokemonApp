@@ -6,7 +6,6 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import com.example.juaraandroid_pokemonapp.core.data.datasource.PokemonRemoteDataSource
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.PokemonCacheDataSource
-import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonFavoriteEntity
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonPaginationEntity
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonRemoteKeysEntity
 import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant
@@ -179,18 +178,6 @@ class PokemonRepositoryImpl @Inject constructor(
                 DomainResult.Error("$DEFAULT_ERROR ${result.exception.message}")
             }
         }
-    }
-
-    override suspend fun saveFavorite(data: PokemonDetail) {
-        cacheDataSource.saveFavorite(data)
-    }
-
-    override suspend fun clearFavorite(id: Int) {
-        cacheDataSource.clearFavorite(id)
-    }
-
-    override fun getListFavorite(): Flow<List<PokemonFavoriteEntity>> {
-        return cacheDataSource.getListFavorite()
     }
 
     override fun getListOfQuiz(): Flow<List<PokemonDetail>> {
