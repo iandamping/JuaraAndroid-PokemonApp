@@ -26,6 +26,12 @@ interface ApiInterface {
     @GET
     suspend fun getPokemon(@Url url: String): PokemonDetailResponse
 
+    @GET
+    suspend fun getPokemonEggGroup(@Url url: String): PokemonEggGroupResponse
+
+    @GET
+    suspend fun getPokemonEvolution(@Url url: String): PokemonEvolutionResponse
+
     @GET("$GET_POKEMON_CHARACTERISTIC/{id}")
     suspend fun getPokemonCharacteristic(@Path("id") id: Int): Response<PokemonCharacteristicResponse>
 

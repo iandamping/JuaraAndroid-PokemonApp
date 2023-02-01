@@ -15,6 +15,10 @@ interface PokemonUseCase {
 
     suspend fun getPokemon(): DomainResult<List<PokemonDetail>>
 
+    suspend fun getEvolvingPokemon(url: String): DomainResult<PokemonDetail>
+
+    suspend fun getSimilarEggGroupPokemon(url:String): DomainResult<List<PokemonDetail>>
+
     fun getPaginationPokemon(): Flow<PagingData<PokemonDetail>>
 
     suspend fun getDetailSpeciesPokemon(id: Int): DomainResult<PokemonDetailSpecies>

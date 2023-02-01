@@ -136,7 +136,10 @@ fun PokemonSpeciesDetailResponse.mapToSpeciesDetail(): PokemonDetailSpecies = Po
     generation = pokemonGeneration.pokemonGenerationLString,
     growthRate = pokemonGrowthRate.pokemonGrowthRate,
     habitat = pokemonHabitat.pokemonHabitat,
-    shape = pokemonShape.pokemonShape
+    shape = pokemonShape.pokemonShape,
+    pokemonEggGroup = pokemonEggGroup.first().eggName,
+    pokemonEggGroupUrl = pokemonEggGroup.first().url,
+    pokemonEvolutionUrl = pokemonEvolution.url
 )
 
 fun List<PokemonSpeciesEggGroupResponse>.checkEggGroupList(size: Int, position: Int): String =

@@ -64,7 +64,9 @@ fun PokemonNavigationHost(
                 type = NavType.IntType
             })
         ) {
-            DetailPokemonScreen(modifier = Modifier.fillMaxSize())
+            DetailPokemonScreen(modifier = Modifier.fillMaxSize(), onSelectedPokemon = { id ->
+                navController.navigate("${PokemonNavigationScreen.DetailPokemonScreenNavigation.name}/$id")
+            })
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.example.juaraandroid_pokemonapp.feature.detail.tabslayout
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -25,15 +24,12 @@ sealed class TabItem(var title: String, var screen: ComposableFun) {
         val area: DetailPokemonAreaState
     ) :
         TabItem(TAB_BIO, {
-            Column {
-                DetailPokemonBioSection(modifier = Modifier.fillMaxWidth(), data = data)
-                DetailPokemonCharacteristicSection(
-                    modifier = Modifier.fillMaxWidth(),
-                    data = characteristic
-                )
-                DetailPokemonTypeSection(modifier = Modifier.fillMaxWidth(), data = data)
-                DetailPokemonAreaSection(modifier = Modifier.fillMaxWidth(), area = area)
-            }
+            DetailPokemonBioSection(
+                modifier = Modifier.fillMaxWidth(),
+                dataStat = data,
+                dataCharacteristic = characteristic,
+                area = area
+            )
         })
 
     data class PokemonStat(val data: DetailPokemonStatState) :

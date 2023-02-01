@@ -3,9 +3,7 @@ package com.example.juaraandroid_pokemonapp.core.data.datasource
 import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.ApiInterface
 import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.BaseSource
 import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant.EMPTY_DATA
-import com.example.juaraandroid_pokemonapp.core.data.datasource.response.PokemonDetailResponse
-import com.example.juaraandroid_pokemonapp.core.data.datasource.response.PokemonResultsResponse
-import com.example.juaraandroid_pokemonapp.core.data.datasource.response.PokemonSpeciesDetailResponse
+import com.example.juaraandroid_pokemonapp.core.data.datasource.response.*
 import com.example.juaraandroid_pokemonapp.core.domain.common.ApiResult
 import com.example.juaraandroid_pokemonapp.core.domain.common.DataSourceResult
 import java.util.*
@@ -42,6 +40,22 @@ class PokemonRemoteDataSourceImpl @Inject constructor(
     override suspend fun getDetailPokemon(url: String): PokemonDetailResponse {
         return try {
             api.getPokemon(url)
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
+    override suspend fun getPokemonEggGroup(url: String): List<ItemPokemonEggResponse> {
+        return try {
+            api.getPokemonEggGroup(url).eggGroupSpecies
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
+    override suspend fun getPokemonEvolution(url: String): EvolvingPokemon {
+        return try {
+            api.getPokemonEvolution(url).evolutionChain.evolveTo.first().evolvingPokemonSpecies
         } catch (e: Exception) {
             throw e
         }

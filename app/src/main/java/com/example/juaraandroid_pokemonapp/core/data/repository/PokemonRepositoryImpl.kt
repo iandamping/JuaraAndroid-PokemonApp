@@ -17,6 +17,7 @@ import com.example.juaraandroid_pokemonapp.core.domain.model.PokemonDetail
 import com.example.juaraandroid_pokemonapp.core.domain.model.PokemonDetailSpecies
 import com.example.juaraandroid_pokemonapp.core.domain.repository.PokemonRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import retrofit2.HttpException
 import java.io.IOException
@@ -51,6 +52,38 @@ class PokemonRepositoryImpl @Inject constructor(
             is DataSourceResult.SourceError -> {
                 DomainResult.Error("$DEFAULT_ERROR ${result.exception.message}")
             }
+        }
+    }
+
+    override suspend fun getEvolvingPokemon(url: String): DomainResult<PokemonDetail> {
+        return try {
+            val cacheResult = cacheDataSource.getPokemonQuiz().map { it.mapListToDetail() }.first()
+            val remoteResult = remoteDataSource.getPokemonEvolution(url)
+            val mapResult =
+                cacheResult.first { it.pokemonName.equals(remoteResult.eggName, ignoreCase = true) }
+            DomainResult.Content(mapResult)
+        } catch (e: Exception) {
+            DomainResult.Error(e.message ?: EMPTY_DATA)
+        }
+
+    }
+
+    override suspend fun getSimilarEggGroupPokemon(url: String): DomainResult<List<PokemonDetail>> {
+        return try {
+            val cacheResult = cacheDataSource.getPokemonQuiz().map { it.mapListToDetail() }.first()
+            val remoteResultName =
+                remoteDataSource.getPokemonEggGroup(url).shuffled().take(4).map { it.name }
+            val mapResult = remoteResultName.flatMap { pokemonName ->
+                cacheResult.filter { it.pokemonName.equals(pokemonName, ignoreCase = true) }
+            }
+            if (mapResult.isEmpty()) {
+                DomainResult.Error(EMPTY_DATA)
+            } else {
+                DomainResult.Content(mapResult)
+            }
+
+        } catch (e: Exception) {
+            DomainResult.Error(e.message ?: EMPTY_DATA)
         }
     }
 
