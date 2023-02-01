@@ -17,6 +17,10 @@ interface PokemonRepository {
 
     suspend fun getPokemon(): DomainResult<List<PokemonDetail>>
 
+    suspend fun getEvolvingPokemon(url: String): DomainResult<PokemonDetail>
+
+    suspend fun getSimilarEggGroupPokemon(url:String): DomainResult<List<PokemonDetail>>
+
     fun getPaginationPokemonRemoteMediator(): RemoteMediator<Int, PokemonPaginationEntity>
 
     fun getPaginationPokemonPagingSource(): PagingSource<Int, PokemonPaginationEntity>

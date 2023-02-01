@@ -5,17 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.juaraandroid_pokemonapp.core.domain.common.DomainResult
 import com.example.juaraandroid_pokemonapp.core.domain.usecase.PokemonUseCase
-import com.example.juaraandroid_pokemonapp.feature.state.DetailPokemonAreaState
-import com.example.juaraandroid_pokemonapp.feature.state.DetailPokemonCharacteristicState
-import com.example.juaraandroid_pokemonapp.feature.state.DetailPokemonSpeciesState
-import com.example.juaraandroid_pokemonapp.feature.state.DetailPokemonStatState
+import com.example.juaraandroid_pokemonapp.feature.state.*
 import com.example.juaraandroid_pokemonapp.navigation.PokemonNavigationArgument
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -46,6 +40,17 @@ class DetailViewModel @Inject constructor(
         MutableStateFlow(DetailPokemonSpeciesState.initial())
     val detailSpeciesState: StateFlow<DetailPokemonSpeciesState> = _detailSpeciesState.asStateFlow()
 
+    private val _detailEvolutionState: MutableStateFlow<DetailPokemonSpeciesEvolutionState> =
+        MutableStateFlow(DetailPokemonSpeciesEvolutionState.initial())
+    val detailEvolutionState: StateFlow<DetailPokemonSpeciesEvolutionState> =
+        _detailEvolutionState.asStateFlow()
+
+
+    private val _detailEggGroupState: MutableStateFlow<DetailPokemonEggGroupState> =
+        MutableStateFlow(DetailPokemonEggGroupState.initial())
+    val detailEggGroupState: StateFlow<DetailPokemonEggGroupState> =
+        _detailEggGroupState.asStateFlow()
+
     init {
         viewModelScope.launch {
             detailPokemonId.collect {
@@ -54,6 +59,40 @@ class DetailViewModel @Inject constructor(
                     launch { getPokemonCharacteristicById(it) },
                     launch { getPokemonLocationAreaById(it) },
                     launch { getPokemonSpeciesById(it) }).joinAll()
+            }
+        }
+
+        viewModelScope.launch {
+            detailSpeciesState.collectLatest {
+                if (!it.isLoading){
+                    when {
+                        it.data != null -> {
+                            listOf<Job>(
+                                launch { getPokemonEggGroupByUrl(it.data.pokemonEggGroupUrl, "") },
+                                launch {
+                                    getPokemonSpeciesEvolution(
+                                        it.data.pokemonEvolutionUrl,
+                                        ""
+                                    )
+                                }).joinAll()
+                        }
+                        it.failedMessage.isNotEmpty() -> {
+                            listOf<Job>(
+                                launch {
+                                    getPokemonEggGroupByUrl(
+                                        "",
+                                        it.failedMessage
+                                    )
+                                },
+                                launch {
+                                    getPokemonSpeciesEvolution(
+                                        "",
+                                        it.failedMessage
+                                    )
+                                }).joinAll()
+                        }
+                    }
+                }
             }
         }
     }
@@ -100,6 +139,46 @@ class DetailViewModel @Inject constructor(
                 currentUiState.copy(isLoading = false, failedMessage = data.message)
             }
         }
+    }
+
+    private suspend fun getPokemonEggGroupByUrl(url: String, failedFromParent: String) {
+        if (failedFromParent.isNotEmpty()) {
+            _detailEggGroupState.value = DetailPokemonEggGroupState(
+                isLoading = false,
+                failedMessage = failedFromParent,
+                data = emptyList()
+            )
+        } else {
+            when (val data = useCase.getSimilarEggGroupPokemon(url)) {
+                is DomainResult.Content -> _detailEggGroupState.update { currentUiState ->
+                    currentUiState.copy(isLoading = false, data = data.data)
+                }
+                is DomainResult.Error -> _detailEggGroupState.update { currentUiState ->
+                    currentUiState.copy(isLoading = false, failedMessage = data.message)
+                }
+            }
+        }
+
+    }
+
+    private suspend fun getPokemonSpeciesEvolution(url: String, failedFromParent: String) {
+        if (failedFromParent.isNotEmpty()) {
+            _detailEvolutionState.value = DetailPokemonSpeciesEvolutionState(
+                isLoading = false,
+                failedMessage = failedFromParent,
+                data = null
+            )
+        } else {
+            when (val data = useCase.getEvolvingPokemon(url)) {
+                is DomainResult.Content -> _detailEvolutionState.update { currentUiState ->
+                    currentUiState.copy(isLoading = false, data = data.data)
+                }
+                is DomainResult.Error -> _detailEvolutionState.update { currentUiState ->
+                    currentUiState.copy(isLoading = false, failedMessage = data.message)
+                }
+            }
+        }
+
     }
 
 }

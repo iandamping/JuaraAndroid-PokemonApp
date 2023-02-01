@@ -25,6 +25,14 @@ class PokemonUseCaseImpl @Inject constructor(private val repository: PokemonRepo
         return repository.getPokemon()
     }
 
+    override suspend fun getEvolvingPokemon(url: String): DomainResult<PokemonDetail> {
+        return repository.getEvolvingPokemon(url)
+    }
+
+    override suspend fun getSimilarEggGroupPokemon(url: String): DomainResult<List<PokemonDetail>> {
+        return repository.getSimilarEggGroupPokemon(url)
+    }
+
     override fun getPaginationPokemon(): Flow<PagingData<PokemonDetail>> {
         return Pager(
             config = PagingConfig(pageSize = 30),

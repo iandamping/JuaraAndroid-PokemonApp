@@ -1,8 +1,6 @@
 package com.example.juaraandroid_pokemonapp.core.data.datasource
 
-import com.example.juaraandroid_pokemonapp.core.data.datasource.response.PokemonDetailResponse
-import com.example.juaraandroid_pokemonapp.core.data.datasource.response.PokemonResultsResponse
-import com.example.juaraandroid_pokemonapp.core.data.datasource.response.PokemonSpeciesDetailResponse
+import com.example.juaraandroid_pokemonapp.core.data.datasource.response.*
 import com.example.juaraandroid_pokemonapp.core.domain.common.DataSourceResult
 
 /**
@@ -18,6 +16,12 @@ interface PokemonRemoteDataSource {
 
     @kotlin.jvm.Throws(Exception::class)
     suspend fun getDetailPokemon(url: String): PokemonDetailResponse
+
+    @kotlin.jvm.Throws(Exception::class)
+    suspend fun getPokemonEggGroup(url: String): List<ItemPokemonEggResponse>
+
+    @kotlin.jvm.Throws(Exception::class)
+    suspend fun getPokemonEvolution(url: String): EvolvingPokemon
 
     suspend fun getDetailPokemonCharacteristic(id: Int): DataSourceResult<String>
 

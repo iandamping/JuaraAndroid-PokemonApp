@@ -15,4 +15,7 @@ data class PokemonDetailSpecies(
     val growthRate: String,
     val habitat: String,
     val shape: String,
+    val pokemonEvolutionUrl: String,
+    val pokemonEggGroup: String,
+    val pokemonEggGroupUrl: String,
 )
