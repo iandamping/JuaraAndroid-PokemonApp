@@ -9,4 +9,10 @@ data class PokemonCharacteristicResponse(
 
 data class ItemPokemonCharacteristicResponse(
     @field:Json(name = "description") val description: String,
+    @field:Json(name = "language") val language: ItemPokemonCharacteristicLanguageResponse
+)
+
+data class ItemPokemonCharacteristicLanguageResponse(
+    @field:Json(name = "name") val name: String,
+    @field:Json(name = "url") val url: String
 )

@@ -1,6 +1,6 @@
 package com.example.juaraandroid_pokemonapp.core.data.datasource.remote
 
-import com.example.juaraandroid_pokemonapp.core.data.model.ApiResult
+import com.example.juaraandroid_pokemonapp.core.domain.common.ApiResult
 import retrofit2.Response
 import java.io.IOException
 import java.net.SocketTimeoutException
@@ -12,29 +12,22 @@ import javax.inject.Inject
  * Indonesia.
  */
 class BaseSourceImpl @Inject constructor() : BaseSource {
-    override suspend fun <T> oneShotCalls(call: suspend () -> Response<T>): ApiResult<T> {
-        try {
-            val response = call.invoke()
-            return if (response.isSuccessful) {
-                val body = response.body()
+    override suspend fun <T> oneShotCalls(call: Response<T>): ApiResult<T> {
+        return try {
+            if (call.isSuccessful) {
+                val body = call.body()
                 if (body != null) {
                     ApiResult.Success(body)
                 } else {
-                    ApiResult.Error(Exception("body is null"))
+                    ApiResult.Error(Exception(NetworkConstant.RESPONSE_BODY_NULL))
                 }
-            } else return ApiResult.Error(Exception("response not success"))
+            } else ApiResult.Error(Exception(NetworkConstant.SERVER_ERROR))
         } catch (e: Exception) {
-            return when (e) {
-                is IOException -> {
-                    ApiResult.Error(e)
-                }
-                is SocketTimeoutException -> {
-                    ApiResult.Error(e)
-                }
-                else -> {
-                    ApiResult.Error(e)
-                }
-            }
+            ApiResult.Error(e)
+        } catch (e: IOException) {
+            ApiResult.Error(e)
+        } catch (e: SocketTimeoutException) {
+            ApiResult.Error(e)
         }
     }
 }

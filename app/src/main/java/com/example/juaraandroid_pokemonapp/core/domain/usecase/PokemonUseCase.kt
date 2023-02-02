@@ -1,9 +1,9 @@
 package com.example.juaraandroid_pokemonapp.core.domain.usecase
 
-import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.PokemonFavoriteEntity
-import com.example.juaraandroid_pokemonapp.core.domain.model.UiState
-import com.example.juaraandroid_pokemonapp.core.domain.response.PokemonDetail
-import com.example.juaraandroid_pokemonapp.core.domain.response.PokemonDetailSpecies
+import androidx.paging.PagingData
+import com.example.juaraandroid_pokemonapp.core.domain.common.DomainResult
+import com.example.juaraandroid_pokemonapp.core.domain.model.PokemonDetail
+import com.example.juaraandroid_pokemonapp.core.domain.model.PokemonDetailSpecies
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -13,19 +13,21 @@ import kotlinx.coroutines.flow.Flow
  */
 interface PokemonUseCase {
 
-    fun getPokemon(): Flow<UiState<List<PokemonDetail>>>
+    suspend fun getPokemon(): DomainResult<List<PokemonDetail>>
 
-    fun getDetailSpeciesPokemon(url: String): Flow<PokemonDetailSpecies>
+    suspend fun getEvolvingPokemon(url: String): DomainResult<PokemonDetail>
 
-    fun getDetailPokemonCharacteristic(id: Int): Flow<UiState<String>>
+    suspend fun getSimilarEggGroupPokemon(url:String): DomainResult<List<PokemonDetail>>
 
-    fun getPokemonLocationAreas(id: Int): Flow<UiState<List<String>>>
+    fun getPaginationPokemon(): Flow<PagingData<PokemonDetail>>
 
-    fun getPokemonById(id: Int): Flow<UiState<PokemonDetail>>
+    suspend fun getDetailSpeciesPokemon(id: Int): DomainResult<PokemonDetailSpecies>
 
-    suspend fun saveFavorite(data: PokemonDetail)
+    suspend fun getDetailPokemonCharacteristic(id: Int): DomainResult<String>
 
-    suspend fun clearFavorite(id: Int)
+    suspend fun getPokemonLocationAreas(id: Int): DomainResult<List<String>>
 
-    fun getListFavorite(): Flow<List<PokemonFavoriteEntity>>
+    suspend fun getPokemonById(id: Int): DomainResult<PokemonDetail>
+
+    fun getListOfQuiz(): Flow<List<PokemonDetail>>
 }

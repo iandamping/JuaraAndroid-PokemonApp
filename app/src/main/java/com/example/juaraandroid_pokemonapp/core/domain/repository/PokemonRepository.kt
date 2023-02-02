@@ -1,9 +1,11 @@
 package com.example.juaraandroid_pokemonapp.core.domain.repository
 
-import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.PokemonFavoriteEntity
-import com.example.juaraandroid_pokemonapp.core.domain.model.DomainResult
-import com.example.juaraandroid_pokemonapp.core.domain.response.PokemonDetail
-import com.example.juaraandroid_pokemonapp.core.domain.response.PokemonDetailSpecies
+import androidx.paging.PagingSource
+import androidx.paging.RemoteMediator
+import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonPaginationEntity
+import com.example.juaraandroid_pokemonapp.core.domain.common.DomainResult
+import com.example.juaraandroid_pokemonapp.core.domain.model.PokemonDetail
+import com.example.juaraandroid_pokemonapp.core.domain.model.PokemonDetailSpecies
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -13,20 +15,23 @@ import kotlinx.coroutines.flow.Flow
  */
 interface PokemonRepository {
 
-    fun getPokemon(): Flow<DomainResult<List<PokemonDetail>>>
+    suspend fun getPokemon(): DomainResult<List<PokemonDetail>>
 
-    fun getDetailSpeciesPokemon(url: String): Flow<PokemonDetailSpecies>
+    suspend fun getEvolvingPokemon(url: String): DomainResult<PokemonDetail>
 
-    fun getDetailPokemonCharacteristic(id: Int): Flow<DomainResult<String>>
+    suspend fun getSimilarEggGroupPokemon(url:String): DomainResult<List<PokemonDetail>>
 
-    fun getPokemonLocationAreas(id: Int): Flow<DomainResult<List<String>>>
+    fun getPaginationPokemonRemoteMediator(): RemoteMediator<Int, PokemonPaginationEntity>
 
-    fun getPokemonById(id: Int): Flow<DomainResult<PokemonDetail>>
+    fun getPaginationPokemonPagingSource(): PagingSource<Int, PokemonPaginationEntity>
 
-    suspend fun saveFavorite(data: PokemonDetail)
+    suspend fun getDetailSpeciesPokemon(id: Int): DomainResult<PokemonDetailSpecies>
 
-    suspend fun clearFavorite(id: Int)
+    suspend fun getDetailPokemonCharacteristic(id: Int): DomainResult<String>
 
-    fun getListFavorite(): Flow<List<PokemonFavoriteEntity>>
+    suspend fun getPokemonLocationAreas(id: Int): DomainResult<List<String>>
 
+    suspend fun getPokemonById(id: Int): DomainResult<PokemonDetail>
+
+    fun getListOfQuiz(): Flow<List<PokemonDetail>>
 }

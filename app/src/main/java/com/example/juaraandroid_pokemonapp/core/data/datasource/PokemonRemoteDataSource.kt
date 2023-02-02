@@ -1,9 +1,7 @@
 package com.example.juaraandroid_pokemonapp.core.data.datasource
 
-import com.example.juaraandroid_pokemonapp.core.data.datasource.response.PokemonDetailResponse
-import com.example.juaraandroid_pokemonapp.core.data.datasource.response.PokemonResultsResponse
-import com.example.juaraandroid_pokemonapp.core.data.datasource.response.PokemonSpeciesDetailResponse
-import com.example.juaraandroid_pokemonapp.core.data.model.DataSourceResult
+import com.example.juaraandroid_pokemonapp.core.data.datasource.response.*
+import com.example.juaraandroid_pokemonapp.core.domain.common.DataSourceResult
 
 /**
  * Created by Ian Damping on 07,May,2021
@@ -14,7 +12,19 @@ interface PokemonRemoteDataSource {
 
     suspend fun getPokemon(): DataSourceResult<List<PokemonResultsResponse>>
 
+    suspend fun getPaginationPokemon(offset: Int): DataSourceResult<List<PokemonResultsResponse>>
+
+    @kotlin.jvm.Throws(Exception::class)
     suspend fun getDetailPokemon(url: String): PokemonDetailResponse
+
+    @kotlin.jvm.Throws(Exception::class)
+    suspend fun getDetailPokemonDirectByName(name: String): PokemonDetailResponse
+
+    @kotlin.jvm.Throws(Exception::class)
+    suspend fun getPokemonEggGroup(url: String): List<ItemPokemonEggResponse>
+
+    @kotlin.jvm.Throws(Exception::class)
+    suspend fun getPokemonEvolution(url: String): EvolvingPokemon
 
     suspend fun getDetailPokemonCharacteristic(id: Int): DataSourceResult<String>
 
@@ -22,5 +32,7 @@ interface PokemonRemoteDataSource {
 
     suspend fun getPokemonById(id: Int): DataSourceResult<PokemonDetailResponse>
 
-    suspend fun getDetailSpeciesPokemon(url: String): PokemonSpeciesDetailResponse
+    suspend fun getPokemonByName(name: String): DataSourceResult<PokemonDetailResponse>
+
+    suspend fun getDetailSpeciesPokemon(id: Int): DataSourceResult<PokemonSpeciesDetailResponse>
 }

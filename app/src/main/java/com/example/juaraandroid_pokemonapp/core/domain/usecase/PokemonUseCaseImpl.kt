@@ -1,11 +1,14 @@
 package com.example.juaraandroid_pokemonapp.core.domain.usecase
 
-import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.PokemonFavoriteEntity
-import com.example.juaraandroid_pokemonapp.core.domain.model.DomainResult
-import com.example.juaraandroid_pokemonapp.core.domain.model.UiState
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.map
+import com.example.juaraandroid_pokemonapp.core.domain.common.DomainResult
+import com.example.juaraandroid_pokemonapp.core.domain.common.mapToDetail
+import com.example.juaraandroid_pokemonapp.core.domain.model.PokemonDetail
+import com.example.juaraandroid_pokemonapp.core.domain.model.PokemonDetailSpecies
 import com.example.juaraandroid_pokemonapp.core.domain.repository.PokemonRepository
-import com.example.juaraandroid_pokemonapp.core.domain.response.PokemonDetail
-import com.example.juaraandroid_pokemonapp.core.domain.response.PokemonDetailSpecies
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -18,56 +21,46 @@ import javax.inject.Inject
 class PokemonUseCaseImpl @Inject constructor(private val repository: PokemonRepository) :
     PokemonUseCase {
 
-    override fun getPokemon(): Flow<UiState<List<PokemonDetail>>> {
-        return repository.getPokemon().map {
-            when (it) {
-                is DomainResult.Error -> UiState.Error(it.message)
-                is DomainResult.Content -> UiState.Content(it.data)
-            }
+    override suspend fun getPokemon(): DomainResult<List<PokemonDetail>> {
+        return repository.getPokemon()
+    }
+
+    override suspend fun getEvolvingPokemon(url: String): DomainResult<PokemonDetail> {
+        return repository.getEvolvingPokemon(url)
+    }
+
+    override suspend fun getSimilarEggGroupPokemon(url: String): DomainResult<List<PokemonDetail>> {
+        return repository.getSimilarEggGroupPokemon(url)
+    }
+
+    override fun getPaginationPokemon(): Flow<PagingData<PokemonDetail>> {
+        return Pager(
+            config = PagingConfig(pageSize = 30),
+            remoteMediator = repository.getPaginationPokemonRemoteMediator(),
+            pagingSourceFactory = { repository.getPaginationPokemonPagingSource() }
+        ).flow.map { pagingData ->
+            pagingData.map { it.mapToDetail() }
         }
     }
 
-    override fun getDetailSpeciesPokemon(url: String): Flow<PokemonDetailSpecies> {
-        return repository.getDetailSpeciesPokemon(url = url)
+    override suspend fun getDetailSpeciesPokemon(id: Int): DomainResult<PokemonDetailSpecies> {
+        return repository.getDetailSpeciesPokemon(id)
     }
 
-    override fun getDetailPokemonCharacteristic(id: Int): Flow<UiState<String>> {
-        return repository.getDetailPokemonCharacteristic(id).map {
-            when (it) {
-                is DomainResult.Error -> UiState.Error(it.message)
-                is DomainResult.Content -> UiState.Content(it.data)
-            }
-        }
+    override suspend fun getDetailPokemonCharacteristic(id: Int): DomainResult<String> {
+        return repository.getDetailPokemonCharacteristic(id)
     }
 
-    override fun getPokemonLocationAreas(id: Int): Flow<UiState<List<String>>> {
-        return repository.getPokemonLocationAreas(id).map {
-            when (it) {
-                is DomainResult.Error -> UiState.Error(it.message)
-                is DomainResult.Content -> UiState.Content(it.data)
-            }
-        }
+    override suspend fun getPokemonLocationAreas(id: Int): DomainResult<List<String>> {
+        return repository.getPokemonLocationAreas(id)
     }
 
-    override fun getPokemonById(id: Int): Flow<UiState<PokemonDetail>> {
-        return repository.getPokemonById(id).map {
-            when (it) {
-                is DomainResult.Error -> UiState.Error(it.message)
-                is DomainResult.Content -> UiState.Content(it.data)
-            }
-        }
+    override suspend fun getPokemonById(id: Int): DomainResult<PokemonDetail> {
+        return repository.getPokemonById(id)
     }
 
-    override suspend fun saveFavorite(data: PokemonDetail) {
-        repository.saveFavorite(data)
-    }
-
-    override suspend fun clearFavorite(id: Int) {
-        repository.clearFavorite(id)
-    }
-
-    override fun getListFavorite(): Flow<List<PokemonFavoriteEntity>> {
-        return repository.getListFavorite()
+    override fun getListOfQuiz(): Flow<List<PokemonDetail>> {
+        return repository.getListOfQuiz()
     }
 
 }
