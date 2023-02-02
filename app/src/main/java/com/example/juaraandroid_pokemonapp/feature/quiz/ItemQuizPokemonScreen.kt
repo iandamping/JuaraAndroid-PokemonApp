@@ -3,8 +3,10 @@ package com.example.juaraandroid_pokemonapp.feature.quiz
 import androidx.compose.animation.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,19 +28,42 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.airbnb.lottie.compose.*
 import com.example.juaraandroid_pokemonapp.R
 import com.example.juaraandroid_pokemonapp.theme.LatoFontFamily
+import com.example.juaraandroid_pokemonapp.util.PokemonConstant.LOTTIE_QUIZ_CORRECT_LOADING
+import com.example.juaraandroid_pokemonapp.util.PokemonConstant.LOTTIE_QUIZ_WRONG_LOADING
 
 @Composable
 fun ItemQuizPokemonScreen(
     modifier: Modifier = Modifier,
-    pokemonId:Int,
+    pokemonId: Int,
     pokemonImage: String,
     randomName: List<String>,
     pokemonName: String,
-    onDetailScreenIsClicked: (Int) -> Unit
+    onDetailScreenIsClicked: (Int) -> Unit,
 ) {
     val density = LocalDensity.current
+
+    val correctAnswerComposition by rememberLottieComposition(
+        LottieCompositionSpec.Asset(
+            LOTTIE_QUIZ_CORRECT_LOADING
+        )
+    )
+    val progressCorrectAnswer by animateLottieCompositionAsState(
+        correctAnswerComposition,
+        iterations = LottieConstants.IterateForever
+    )
+
+    val wrongAnswerComposition by rememberLottieComposition(
+        LottieCompositionSpec.Asset(
+            LOTTIE_QUIZ_WRONG_LOADING
+        )
+    )
+    val progressWrongAnswer by animateLottieCompositionAsState(
+        wrongAnswerComposition,
+        iterations = LottieConstants.IterateForever
+    )
 
     var isAnswered by rememberSaveable {
         mutableStateOf(false)
@@ -70,7 +95,7 @@ fun ItemQuizPokemonScreen(
                     width = Dimension.fillToConstraints
                 },
                 painter = painterResource(id = R.drawable.pokemon_logo),
-                contentDescription = "pokemon logo"
+                contentDescription = stringResource(R.string.pokemon_logo)
             )
 
             AsyncImage(
@@ -85,17 +110,20 @@ fun ItemQuizPokemonScreen(
                 model = ImageRequest.Builder(LocalContext.current).data(pokemonImage)
                     .crossfade(true)
                     .build(),
-                contentDescription = "pokemon image",
+                contentDescription = stringResource(R.string.pokemon_image),
                 placeholder = painterResource(id = R.drawable.placeholder_image),
                 colorFilter = if (!isAnswered) ColorFilter.tint(Color.Gray) else null
             )
 
             AnimatedVisibility(
                 modifier = Modifier.constrainAs(successAnimationRef) {
-                    top.linkTo(imageRef.bottom, 8.dp)
+
+
+                    top.linkTo(realPokemonNameGuideline)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                    centerHorizontallyTo(parent)
+                    width = Dimension.fillToConstraints
+
                 },
                 visible = isAnswered,
                 enter = slideInVertically {
@@ -112,31 +140,22 @@ fun ItemQuizPokemonScreen(
 
             ) {
 
-                Button(shape = RoundedCornerShape(20.dp),
-                    onClick = {}
-                ) {
-                    Image(
-                        modifier = Modifier
-                            .size(24.dp)
-                            .padding(end = 8.dp),
-                        painter = painterResource(id = if (isAnswerCorrect) R.drawable.ic_question_correct else R.drawable.ic_question_wrong),
-                        contentDescription = "back to top"
-                    )
-                    Text(
-                        text = if (isAnswerCorrect) stringResource(R.string.correct_answer) else stringResource(
-                            R.string.wrong_answer
-                        )
-                    )
-                }
+                LottieAnimation(
+                    modifier = Modifier.size(if (isAnswerCorrect) 100.dp else 50.dp),
+                    composition = if (isAnswerCorrect) correctAnswerComposition else wrongAnswerComposition,
+                    progress = { if (isAnswerCorrect) progressCorrectAnswer else progressWrongAnswer },
+                )
+
+
             }
 
             if (isAnswered) {
                 Text(
                     modifier = Modifier.constrainAs(realPokemonNameRef) {
-                        top.linkTo(realPokemonNameGuideline)
+                        top.linkTo(imageRef.bottom, 8.dp)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
-                        width = Dimension.fillToConstraints
+                        centerHorizontallyTo(parent)
                     },
                     text = pokemonName, style = MaterialTheme.typography.h4.copy(
                         fontFamily = LatoFontFamily,
@@ -158,7 +177,10 @@ fun ItemQuizPokemonScreen(
                     enabled = !isAnswered,
                     onClick = {
                         isAnswered = !isAnswered
-                        isAnswerCorrect = randomName.first() == pokemonName
+                        if (randomName.first() == pokemonName) {
+                            isAnswerCorrect = true
+                        }
+
                     }) {
                     Text(text = randomName.first())
                 }
@@ -175,7 +197,9 @@ fun ItemQuizPokemonScreen(
                     enabled = !isAnswered,
                     onClick = {
                         isAnswered = !isAnswered
-                        isAnswerCorrect = randomName[1] == pokemonName
+                        if (randomName[1] == pokemonName) {
+                            isAnswerCorrect = true
+                        }
                     }) {
                     Text(text = randomName[1])
                 }
@@ -192,7 +216,9 @@ fun ItemQuizPokemonScreen(
                     enabled = !isAnswered,
                     onClick = {
                         isAnswered = !isAnswered
-                        isAnswerCorrect = randomName.last() == pokemonName
+                        if (randomName.last() == pokemonName) {
+                            isAnswerCorrect = true
+                        }
                     }) {
                     Text(text = randomName.last())
                 }

@@ -102,6 +102,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     //lottie
     debugImplementation "com.airbnb.android:lottie-compose:4.1.0"
+    implementation "com.airbnb.android:lottie-compose:5.2.0"
     //navigation
     implementation "androidx.navigation:navigation-compose:$navigation_version"
     //hilt
