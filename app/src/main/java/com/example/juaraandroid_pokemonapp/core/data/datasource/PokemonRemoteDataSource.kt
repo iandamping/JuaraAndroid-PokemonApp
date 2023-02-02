@@ -18,6 +18,9 @@ interface PokemonRemoteDataSource {
     suspend fun getDetailPokemon(url: String): PokemonDetailResponse
 
     @kotlin.jvm.Throws(Exception::class)
+    suspend fun getDetailPokemonDirectByName(name: String): PokemonDetailResponse
+
+    @kotlin.jvm.Throws(Exception::class)
     suspend fun getPokemonEggGroup(url: String): List<ItemPokemonEggResponse>
 
     @kotlin.jvm.Throws(Exception::class)
@@ -28,6 +31,8 @@ interface PokemonRemoteDataSource {
     suspend fun getPokemonLocationAreas(id: Int): DataSourceResult<List<String>>
 
     suspend fun getPokemonById(id: Int): DataSourceResult<PokemonDetailResponse>
+
+    suspend fun getPokemonByName(name: String): DataSourceResult<PokemonDetailResponse>
 
     suspend fun getDetailSpeciesPokemon(id: Int): DataSourceResult<PokemonSpeciesDetailResponse>
 }

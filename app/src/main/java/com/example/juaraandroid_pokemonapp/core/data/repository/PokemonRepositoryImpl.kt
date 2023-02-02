@@ -59,9 +59,24 @@ class PokemonRepositoryImpl @Inject constructor(
         return try {
             val cacheResult = cacheDataSource.getPokemonQuiz().map { it.mapListToDetail() }.first()
             val remoteResult = remoteDataSource.getPokemonEvolution(url)
-            val mapResult =
-                cacheResult.first { it.pokemonName.equals(remoteResult.eggName, ignoreCase = true) }
-            DomainResult.Content(mapResult)
+            val mapCacheResult = cacheResult.firstOrNull {
+                it.pokemonName.equals(
+                    remoteResult.eggName,
+                    ignoreCase = true
+                )
+            }
+            if (mapCacheResult != null) {
+                DomainResult.Content(mapCacheResult)
+            } else {
+                when (val getPokemonFromRemote =
+                    remoteDataSource.getPokemonByName(remoteResult.eggName)) {
+                    is DataSourceResult.SourceError -> DomainResult.Error(
+                        getPokemonFromRemote.exception.message ?: EMPTY_DATA
+                    )
+                    is DataSourceResult.SourceValue -> DomainResult.Content(getPokemonFromRemote.data.mapToDetail())
+                }
+            }
+
         } catch (e: Exception) {
             DomainResult.Error(e.message ?: EMPTY_DATA)
         }
@@ -73,13 +88,19 @@ class PokemonRepositoryImpl @Inject constructor(
             val cacheResult = cacheDataSource.getPokemonQuiz().map { it.mapListToDetail() }.first()
             val remoteResultName =
                 remoteDataSource.getPokemonEggGroup(url).shuffled().take(4).map { it.name }
-            val mapResult = remoteResultName.flatMap { pokemonName ->
+            val mapCacheResult = remoteResultName.flatMap { pokemonName ->
                 cacheResult.filter { it.pokemonName.equals(pokemonName, ignoreCase = true) }
             }
-            if (mapResult.isEmpty()) {
-                DomainResult.Error(EMPTY_DATA)
+            if (mapCacheResult.isEmpty()) {
+                val getPokemonFromRemote = remoteResultName.map { singleItem ->
+                    remoteDataSource.getDetailPokemonDirectByName(singleItem)
+                        .mapToDetail()
+                }
+                if (getPokemonFromRemote.isNotEmpty()) {
+                    DomainResult.Content(getPokemonFromRemote)
+                } else DomainResult.Error(EMPTY_DATA)
             } else {
-                DomainResult.Content(mapResult)
+                DomainResult.Content(mapCacheResult)
             }
 
         } catch (e: Exception) {

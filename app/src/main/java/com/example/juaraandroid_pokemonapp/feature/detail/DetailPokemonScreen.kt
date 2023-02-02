@@ -80,6 +80,7 @@ fun DetailPokemonScreen(
                                 .crossfade(true)
                                 .build(),
                             placeholder = painterResource(id = R.drawable.placeholder_image),
+                            error = painterResource(id = R.drawable.ic_no_data),
                             contentDescription = stringResource(R.string.pokemon_image)
                         )
 

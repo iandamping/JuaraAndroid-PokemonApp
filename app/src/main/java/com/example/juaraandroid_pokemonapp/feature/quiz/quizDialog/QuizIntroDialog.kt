@@ -22,7 +22,11 @@ fun QuizIntroDialog(
     onDismissDialogRequest: (Boolean) -> Unit
 ) {
     if (dialogState) {
-        val composition by rememberLottieComposition(LottieCompositionSpec.Asset(LOTTIE_QUIZ_INTRO_LOADING))
+        val composition by rememberLottieComposition(
+            LottieCompositionSpec.Asset(
+                LOTTIE_QUIZ_INTRO_LOADING
+            )
+        )
         val progress by animateLottieCompositionAsState(composition)
 
         if (progress == 1.0f) {

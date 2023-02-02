@@ -112,6 +112,7 @@ fun ItemQuizPokemonScreen(
                     .build(),
                 contentDescription = stringResource(R.string.pokemon_image),
                 placeholder = painterResource(id = R.drawable.placeholder_image),
+                error = painterResource(id = R.drawable.ic_no_data),
                 colorFilter = if (!isAnswered) ColorFilter.tint(Color.Gray) else null
             )
 

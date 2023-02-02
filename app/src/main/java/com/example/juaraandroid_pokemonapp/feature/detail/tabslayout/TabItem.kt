@@ -3,7 +3,9 @@ package com.example.juaraandroid_pokemonapp.feature.detail.tabslayout
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.juaraandroid_pokemonapp.feature.detail.*
+import com.example.juaraandroid_pokemonapp.feature.detail.DetailPokemonBioSection
+import com.example.juaraandroid_pokemonapp.feature.detail.DetailPokemonSpeciesSection
+import com.example.juaraandroid_pokemonapp.feature.detail.DetailPokemonStatSection
 import com.example.juaraandroid_pokemonapp.feature.state.DetailPokemonAreaState
 import com.example.juaraandroid_pokemonapp.feature.state.DetailPokemonCharacteristicState
 import com.example.juaraandroid_pokemonapp.feature.state.DetailPokemonSpeciesState
