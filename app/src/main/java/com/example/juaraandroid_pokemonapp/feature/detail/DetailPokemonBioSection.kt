@@ -191,9 +191,12 @@ fun DetailPokemonBioSection(
             }
         }
 
-        when{
-            dataCharacteristic.characteristic.isNotEmpty() ->{
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+        when {
+            dataCharacteristic.characteristic.isNotEmpty() -> {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
                     Text(
                         text = stringResource(R.string.characteristic_name),
                         style = MaterialTheme.typography.subtitle1.copy(
@@ -225,7 +228,7 @@ fun DetailPokemonBioSection(
                 }
             }
 
-            dataCharacteristic.failedMessage.isNotEmpty() ->{
+            dataCharacteristic.failedMessage.isNotEmpty() -> {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
@@ -248,8 +251,8 @@ fun DetailPokemonBioSection(
             }
         }
 
-        when{
-            area.data.isNotEmpty() ->{
+        when {
+            area.data.isNotEmpty() -> {
                 Row(
                     modifier = modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
@@ -339,7 +342,7 @@ fun DetailPokemonBioSection(
                 }
             }
 
-            area.failedMessage.isNotEmpty() ->{
+            area.failedMessage.isNotEmpty() -> {
                 Row(
                     modifier = modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween

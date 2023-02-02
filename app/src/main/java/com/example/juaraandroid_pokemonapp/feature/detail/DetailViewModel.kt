@@ -64,7 +64,7 @@ class DetailViewModel @Inject constructor(
 
         viewModelScope.launch {
             detailSpeciesState.collectLatest {
-                if (!it.isLoading){
+                if (!it.isLoading) {
                     when {
                         it.data != null -> {
                             listOf<Job>(

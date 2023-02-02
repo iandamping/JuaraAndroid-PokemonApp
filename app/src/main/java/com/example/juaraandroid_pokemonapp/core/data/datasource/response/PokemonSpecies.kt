@@ -10,15 +10,15 @@ import com.squareup.moshi.Json
  */
 
 data class PokemonSpeciesDetailResponse(
-    @Json(name = "base_happiness") val pokemonHappiness: Int,
-    @Json(name = "capture_rate") val pokemonCaptureRate: Int,
-    @Json(name = "color") val pokemonColor: PokemonSpeciesColorResponse,
+    @Json(name = "base_happiness") val pokemonHappiness: Int?,
+    @Json(name = "capture_rate") val pokemonCaptureRate: Int?,
+    @Json(name = "color") val pokemonColor: PokemonSpeciesColorResponse?,
     @Json(name = "egg_groups") val pokemonEggGroup: List<PokemonSpeciesEggGroupResponse>,
-    @Json(name = "evolution_chain") val pokemonEvolution: PokemonSpeciesEvolutionResponse,
-    @Json(name = "generation") val pokemonGeneration: PokemonGenerationResponse,
-    @Json(name = "growth_rate") val pokemonGrowthRate: PokemonGrowthRateResponse,
-    @Json(name = "habitat") val pokemonHabitat: PokemonHabitatResponse,
-    @Json(name = "shape") val pokemonShape: PokemonShapeResponse,
+    @Json(name = "evolution_chain") val pokemonEvolution: PokemonSpeciesEvolutionResponse?,
+    @Json(name = "generation") val pokemonGeneration: PokemonGenerationResponse?,
+    @Json(name = "growth_rate") val pokemonGrowthRate: PokemonGrowthRateResponse?,
+    @Json(name = "habitat") val pokemonHabitat: PokemonHabitatResponse?,
+    @Json(name = "shape") val pokemonShape: PokemonShapeResponse?,
 )
 
 data class PokemonGenerationResponse(@Json(name = "name") val pokemonGenerationLString: String)

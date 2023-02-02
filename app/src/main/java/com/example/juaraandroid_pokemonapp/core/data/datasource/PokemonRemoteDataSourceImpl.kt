@@ -45,6 +45,15 @@ class PokemonRemoteDataSourceImpl @Inject constructor(
         }
     }
 
+    @kotlin.jvm.Throws(Exception::class)
+    override suspend fun getDetailPokemonDirectByName(name: String): PokemonDetailResponse {
+        return try {
+            api.getPokemonDirectByName(name)
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
     override suspend fun getPokemonEggGroup(url: String): List<ItemPokemonEggResponse> {
         return try {
             api.getPokemonEggGroup(url).eggGroupSpecies
@@ -84,6 +93,13 @@ class PokemonRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun getPokemonById(id: Int): DataSourceResult<PokemonDetailResponse> {
         return when (val response = oneShotCalls(api.getPokemonById(id))) {
+            is ApiResult.Error -> DataSourceResult.SourceError(response.exception)
+            is ApiResult.Success -> DataSourceResult.SourceValue(response.data)
+        }
+    }
+
+    override suspend fun getPokemonByName(name: String): DataSourceResult<PokemonDetailResponse> {
+        return when (val response = oneShotCalls(api.getPokemonByName(name))) {
             is ApiResult.Error -> DataSourceResult.SourceError(response.exception)
             is ApiResult.Success -> DataSourceResult.SourceValue(response.data)
         }

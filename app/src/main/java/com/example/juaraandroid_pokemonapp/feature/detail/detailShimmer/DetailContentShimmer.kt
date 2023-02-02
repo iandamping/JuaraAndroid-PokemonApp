@@ -29,7 +29,15 @@ fun DetailContentShimmer(
         Spacer(
             modifier = Modifier
                 .fillMaxSize()
-                .height(100.dp)
+                .height(50.dp)
+                .background(brush = brush),
+        )
+        Spacer(modifier = Modifier.padding(4.dp))
+        //tab text
+        Spacer(
+            modifier = Modifier
+                .fillMaxSize()
+                .height(50.dp)
                 .background(brush = brush),
         )
         Spacer(modifier = Modifier.padding(4.dp))
