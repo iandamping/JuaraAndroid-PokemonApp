@@ -1,20 +1,15 @@
 package com.example.juaraandroid_pokemonapp.feature.quiz
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -24,7 +19,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.juaraandroid_pokemonapp.R
-import kotlinx.coroutines.launch
+import com.example.juaraandroid_pokemonapp.feature.quiz.quizDialog.QuizIntroDialog
 
 @Composable
 fun QuizPokemonScreen(
@@ -34,11 +29,14 @@ fun QuizPokemonScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
+    var introDialogState by rememberSaveable {
+        mutableStateOf(true)
+    }
+
     ConstraintLayout(modifier = modifier.fillMaxSize()) {
-        val (lazyRowRef, btnBackToStartRef, errorHandlingRef) = createRefs()
-        val startGuideLine = createGuidelineFromTop(0.25f)
+        val (lazyRowRef, errorHandlingRef) = createRefs()
         val scrollState = rememberLazyListState()
-        val coroutineScope = rememberCoroutineScope()
+
         when {
             state.data.isNotEmpty() -> {
                 LazyRow(
@@ -56,7 +54,9 @@ fun QuizPokemonScreen(
                     flingBehavior = rememberSnapFlingBehavior(scrollState),
                     state = scrollState
                 ) {
-                    items(items = state.data, key = { key -> key.pokemonId }) { pokemonItem ->
+                    items(
+                        items = state.data.take(10),
+                        key = { key -> key.pokemonId }) { pokemonItem ->
                         val randomName: MutableList<String> =
                             state.data.shuffled().take(2)
                                 .filter { it.pokemonName != pokemonItem.pokemonName }
@@ -75,32 +75,6 @@ fun QuizPokemonScreen(
                     }
                 }
 
-                val listShowScrollToStartButton by remember {
-                    derivedStateOf {
-                        scrollState.firstVisibleItemIndex > 0
-                    }
-                }
-
-                AnimatedVisibility(
-                    visible = listShowScrollToStartButton,
-                    modifier = Modifier.constrainAs(btnBackToStartRef) {
-                        top.linkTo(startGuideLine)
-                        start.linkTo(parent.start, 12.dp)
-                    }) {
-                    Button(shape = RoundedCornerShape(20.dp),
-                        onClick = {
-                            coroutineScope.launch {
-                                scrollState.animateScrollToItem(index = 0)
-                            }
-                        }
-                    ) {
-                        Icon(
-                            Icons.Default.ArrowBack,
-                            contentDescription = stringResource(R.string.start_position)
-                        )
-                        Text(text = stringResource(R.string.start_position))
-                    }
-                }
             }
             state.failedMessage.isNotEmpty() -> {
                 Column(
@@ -124,6 +98,15 @@ fun QuizPokemonScreen(
                 }
             }
         }
+
+        QuizIntroDialog(
+            modifier = Modifier.size(150.dp),
+            dialogState = introDialogState,
+            onDismissDialogRequest = { state ->
+                introDialogState = state
+            }
+        )
+
 
     }
 }

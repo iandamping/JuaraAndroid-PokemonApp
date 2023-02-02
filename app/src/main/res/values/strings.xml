@@ -38,4 +38,6 @@
     <string name="ability_name">Ability :</string>
     <string name="pokemon_type_name">Pokemon Type :</string>
     <string name="encounters_name">Encounters :</string>
+    <string name="pokemon_logo">pokemon logo</string>
+    <string name="pokemon_image">pokemon image</string>
 </resources>
