@@ -1,5 +1,6 @@
 package com.example.juaraandroid_pokemonapp
 
+import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonQuizEntity
 import com.example.juaraandroid_pokemonapp.core.data.datasource.response.*
 
 
@@ -66,9 +67,14 @@ object DummyPokemon {
             DUMMY_LIST_POKEMON_ABILITY,
             DUMMY_POKEMON_SPECIAL_1
         )
-    val DUMMY_ITEM_POKEMON_CHAR_1 = ItemPokemonCharacteristicResponse("a")
-    val DUMMY_ITEM_POKEMON_CHAR_2 = ItemPokemonCharacteristicResponse("a")
-    val DUMMY_ITEM_POKEMON_CHAR_3 = ItemPokemonCharacteristicResponse("a")
+    val DUMMY_ITEM_POKEMON_CHAR_1 = ItemPokemonCharacteristicResponse(
+        "a",
+        ItemPokemonCharacteristicLanguageResponse("en", "a")
+    )
+    val DUMMY_ITEM_POKEMON_CHAR_2 =
+        ItemPokemonCharacteristicResponse("a", ItemPokemonCharacteristicLanguageResponse("en", "a"))
+    val DUMMY_ITEM_POKEMON_CHAR_3 =
+        ItemPokemonCharacteristicResponse("a", ItemPokemonCharacteristicLanguageResponse("a", "a"))
     val DUMMY_LIST_ITEM_POKEMON_CHAR = listOf(
         DUMMY_ITEM_POKEMON_CHAR_1, DUMMY_ITEM_POKEMON_CHAR_2,
         DUMMY_ITEM_POKEMON_CHAR_3
@@ -90,15 +96,61 @@ object DummyPokemon {
     val DUMMY_POKEMON_HABITAT = PokemonHabitatResponse("a")
     val DUMMY_POKEMON_SHAPE = PokemonShapeResponse("a")
     val DUMMY_POKEMON_SPECIES_COLOR = PokemonSpeciesColorResponse("a")
-    val DUMMY_POKEMON_SPECIES_EGG_GROUP = PokemonSpeciesEggGroupResponse("a")
+    val DUMMY_POKEMON_SPECIES_EGG_GROUP = PokemonSpeciesEggGroupResponse("a", "a")
     val DUMMY_POKEMON_SPECIES_DETAIL = PokemonSpeciesDetailResponse(
         1,
         1,
         DUMMY_POKEMON_SPECIES_COLOR,
         listOf(DUMMY_POKEMON_SPECIES_EGG_GROUP),
+        PokemonSpeciesEvolutionResponse("a"),
         DUMMY_POKEMON_GENERATION,
         DUMMY_POKEMON_GROWTH_RATE,
         DUMMY_POKEMON_HABITAT,
         DUMMY_POKEMON_SHAPE
+    )
+    val DUMMY_LIST_POKEMON_EGG_GROUP = listOf(
+        ItemPokemonEggResponse("a", "b"),
+        ItemPokemonEggResponse("a", "b"),
+        ItemPokemonEggResponse("a", "b")
+    )
+    val DUMMY_POKEMON_EGG = PokemonEggGroupResponse("a", DUMMY_LIST_POKEMON_EGG_GROUP)
+
+    val DUMMY_POKEMON_EVOLUTION = PokemonEvolutionResponse(
+        ItemPokemonEvolutionChainResponse(
+            listOf(
+                ItemEvolveToResponse(EvolvingPokemon("a", "b")),
+                ItemEvolveToResponse(EvolvingPokemon("a", "b")),
+                ItemEvolveToResponse(EvolvingPokemon("a", "b"))
+            )
+        )
+    )
+
+    val DUMMY_POKEMON_QUIZ_ENTITY = PokemonQuizEntity(
+        1,
+        "a",
+        1,
+        1,
+        "a",
+        "a",
+        "a",
+        "a",
+        "a",
+        "a",
+        "a",
+        "a",
+        1,
+        "a",
+        1,
+        "a",
+        1,
+        "a",
+        1,
+        "a",
+        1,
+        "a",
+        1,
+        "a",
+        "a",
+        "a",
     )
 }
