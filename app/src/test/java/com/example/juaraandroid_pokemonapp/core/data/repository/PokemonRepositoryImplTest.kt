@@ -1,7 +1,9 @@
 package com.example.juaraandroid_pokemonapp.core.data.repository
 
+import com.example.juaraandroid_pokemonapp.DummyPokemon
 import com.example.juaraandroid_pokemonapp.DummyPokemon.DUMMY_POKEMON_DETAIL
 import com.example.juaraandroid_pokemonapp.DummyPokemon.DUMMY_POKEMON_MAIN_RESPONSE
+import com.example.juaraandroid_pokemonapp.DummyPokemon.DUMMY_POKEMON_QUIZ_ENTITY
 import com.example.juaraandroid_pokemonapp.DummyPokemon.DUMMY_POKEMON_SPECIES_DETAIL
 import com.example.juaraandroid_pokemonapp.core.data.datasource.PokemonRemoteDataSource
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.PokemonCacheDataSource
@@ -15,6 +17,7 @@ import com.example.juaraandroid_pokemonapp.core.domain.repository.PokemonReposit
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
@@ -89,6 +92,140 @@ class PokemonRepositoryImplTest {
     }
 
     @Test
+    fun `getEvolvingPokemon success and return value`() = runTest {
+        //given
+        coEvery { remoteDataSource.getPokemonEvolution(any()) } returns DummyPokemon.DUMMY_POKEMON_EVOLUTION.evolutionChain.evolveTo.first().evolvingPokemonSpecies
+
+        coEvery { cacheDataSource.getPokemonQuiz() } returns flowOf(listOf(DUMMY_POKEMON_QUIZ_ENTITY))
+        //when
+        val results = sut.getEvolvingPokemon("a") as DomainResult.Content
+        //then
+        coVerify { remoteDataSource.getPokemonEvolution(any()) }
+        coVerify { cacheDataSource.getPokemonQuiz() }
+        Assert.assertEquals(1, results.data.pokemonId)
+        Assert.assertEquals("a", results.data.pokemonName)
+
+    }
+
+    @Test
+    fun `getEvolvingPokemon failed when source Throw exception`() = runTest {
+        //given
+        coEvery { remoteDataSource.getPokemonEvolution(any()) } throws IOException(NETWORK_ERROR)
+        coEvery { cacheDataSource.getPokemonQuiz() } returns flowOf(listOf(DUMMY_POKEMON_QUIZ_ENTITY))
+        //when
+        val results = sut.getEvolvingPokemon("a") as DomainResult.Error
+        //then
+        coVerify { remoteDataSource.getPokemonEvolution(any()) }
+        coVerify { cacheDataSource.getPokemonQuiz() }
+        Assert.assertEquals(NETWORK_ERROR, results.message)
+    }
+
+    @Test
+    fun `getEvolvingPokemon success return value from backup remote data`() = runTest {
+        //given
+        coEvery { remoteDataSource.getPokemonEvolution(any()) } returns DummyPokemon.DUMMY_POKEMON_EVOLUTION.evolutionChain.evolveTo.first().evolvingPokemonSpecies
+        coEvery { cacheDataSource.getPokemonQuiz() } returns flowOf(emptyList())
+        coEvery { remoteDataSource.getPokemonByName(any()) } returns DataSourceResult.SourceValue(
+            DUMMY_POKEMON_DETAIL
+        )
+        //when
+        val results = sut.getEvolvingPokemon("a") as DomainResult.Content
+        //then
+        coVerify { remoteDataSource.getPokemonEvolution(any()) }
+        coVerify { cacheDataSource.getPokemonQuiz() }
+        coVerify { remoteDataSource.getPokemonByName(any()) }
+
+        Assert.assertEquals(1, results.data.pokemonId)
+        Assert.assertEquals(1, results.data.pokemonHeight)
+        Assert.assertEquals(1, results.data.pokemonWeight)
+        Assert.assertEquals("A", results.data.pokemonName)
+    }
+
+    @Test
+    fun `getEvolvingPokemon failed from all resource`() = runTest {
+        //given
+        coEvery { remoteDataSource.getPokemonEvolution(any()) } returns DummyPokemon.DUMMY_POKEMON_EVOLUTION.evolutionChain.evolveTo.first().evolvingPokemonSpecies
+        coEvery { cacheDataSource.getPokemonQuiz() } returns flowOf(emptyList())
+        coEvery { remoteDataSource.getPokemonByName(any()) } returns DataSourceResult.SourceError(
+            Exception(EMPTY_DATA)
+        )
+        //when
+        val results = sut.getEvolvingPokemon("a") as DomainResult.Error
+        //then
+        coVerify { remoteDataSource.getPokemonEvolution(any()) }
+        coVerify { cacheDataSource.getPokemonQuiz() }
+        coVerify { remoteDataSource.getPokemonByName(any()) }
+
+        Assert.assertEquals(EMPTY_DATA, results.message)
+    }
+    //=
+
+    @Test
+    fun `getSimilarEggGroupPokemon success and return value`() = runTest {
+        //given
+        coEvery { remoteDataSource.getPokemonEggGroup(any()) } returns DummyPokemon.DUMMY_POKEMON_EGG.eggGroupSpecies
+
+        coEvery { cacheDataSource.getPokemonQuiz() } returns flowOf(listOf(DUMMY_POKEMON_QUIZ_ENTITY))
+        //when
+        val results = sut.getSimilarEggGroupPokemon("a") as DomainResult.Content
+        //then
+        coVerify { remoteDataSource.getPokemonEggGroup(any()) }
+        coVerify { cacheDataSource.getPokemonQuiz() }
+        Assert.assertEquals(1, results.data.first().pokemonId)
+        Assert.assertEquals("a", results.data.first().pokemonName)
+
+    }
+
+    @Test
+    fun `getSimilarEggGroupPokemon failed when source Throw exception`() = runTest {
+        //given
+        coEvery { remoteDataSource.getPokemonEggGroup(any()) } throws IOException(NETWORK_ERROR)
+        coEvery { cacheDataSource.getPokemonQuiz() } returns flowOf(listOf(DUMMY_POKEMON_QUIZ_ENTITY))
+        //when
+        val results = sut.getSimilarEggGroupPokemon("a") as DomainResult.Error
+        //then
+        coVerify { remoteDataSource.getPokemonEggGroup(any()) }
+        coVerify { cacheDataSource.getPokemonQuiz() }
+        Assert.assertEquals(NETWORK_ERROR, results.message)
+    }
+
+    @Test
+    fun `getSimilarEggGroupPokemon success return value from backup remote data`() = runTest {
+        //given
+        coEvery { remoteDataSource.getPokemonEggGroup(any()) } returns DummyPokemon.DUMMY_POKEMON_EGG.eggGroupSpecies
+        coEvery { cacheDataSource.getPokemonQuiz() } returns flowOf(emptyList())
+        coEvery { remoteDataSource.getDetailPokemonDirectByName(any()) } returns DUMMY_POKEMON_DETAIL
+        //when
+        val results = sut.getSimilarEggGroupPokemon("a") as DomainResult.Content
+        //then
+        coVerify { remoteDataSource.getPokemonEggGroup(any()) }
+        coVerify { cacheDataSource.getPokemonQuiz() }
+        coVerify { remoteDataSource.getDetailPokemonDirectByName(any()) }
+
+        Assert.assertEquals(1, results.data.first().pokemonId)
+        Assert.assertEquals(1, results.data.first().pokemonHeight)
+        Assert.assertEquals(1, results.data.first().pokemonWeight)
+        Assert.assertEquals("A", results.data.first().pokemonName)
+    }
+
+    @Test
+    fun `getSimilarEggGroupPokemon failed from all resource`() = runTest {
+        //given
+        coEvery { remoteDataSource.getPokemonEggGroup(any()) } returns DummyPokemon.DUMMY_POKEMON_EGG.eggGroupSpecies
+        coEvery { cacheDataSource.getPokemonQuiz() } returns flowOf(emptyList())
+        coEvery { remoteDataSource.getDetailPokemonDirectByName(any()) } throws Exception(EMPTY_DATA)
+        //when
+        val results = sut.getSimilarEggGroupPokemon("a") as DomainResult.Error
+        //then
+        coVerify { remoteDataSource.getPokemonEggGroup(any()) }
+        coVerify { cacheDataSource.getPokemonQuiz() }
+        coVerify { remoteDataSource.getDetailPokemonDirectByName(any()) }
+
+        Assert.assertEquals(EMPTY_DATA, results.message)
+    }
+    //=
+
+    @Test
     fun `getDetailSpeciesPokemon success and return value`() = runTest {
         //given
         coEvery { remoteDataSource.getDetailSpeciesPokemon(any()) } returns DataSourceResult.SourceValue(
@@ -126,7 +263,10 @@ class PokemonRepositoryImplTest {
         val results = sut.getDetailSpeciesPokemon(1) as DomainResult.Error
         //then
         coVerify { remoteDataSource.getDetailSpeciesPokemon(any()) }
-        Assert.assertEquals(NETWORK_ERROR, results.message)
+        Assert.assertEquals(
+            "Application encounter unknown problem :  $NETWORK_ERROR",
+            results.message
+        )
     }
 
 
@@ -153,7 +293,10 @@ class PokemonRepositoryImplTest {
         val results = sut.getDetailPokemonCharacteristic(1) as DomainResult.Error
         //then
         coVerify { remoteDataSource.getDetailPokemonCharacteristic(any()) }
-        Assert.assertEquals(NETWORK_ERROR, results.message)
+        Assert.assertEquals(
+            "Application encounter unknown problem :  $NETWORK_ERROR",
+            results.message
+        )
     }
 
     @Test
@@ -181,7 +324,10 @@ class PokemonRepositoryImplTest {
         val results = sut.getPokemonLocationAreas(1) as DomainResult.Error
         //then
         coVerify { remoteDataSource.getPokemonLocationAreas(any()) }
-        Assert.assertEquals(NETWORK_ERROR, results.message)
+        Assert.assertEquals(
+            "Application encounter unknown problem :  $NETWORK_ERROR",
+            results.message
+        )
     }
 
 
@@ -221,6 +367,9 @@ class PokemonRepositoryImplTest {
         val results = sut.getPokemonById(1) as DomainResult.Error
         //then
         coVerify { remoteDataSource.getPokemonById(any()) }
-        Assert.assertEquals(NETWORK_ERROR, results.message)
+        Assert.assertEquals(
+            "Application encounter unknown problem :  $NETWORK_ERROR",
+            results.message
+        )
     }
 }
