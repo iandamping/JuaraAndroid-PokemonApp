@@ -3,6 +3,8 @@ package com.example.juaraandroid_pokemonapp.core.data.datasource
 import com.example.juaraandroid_pokemonapp.DummyPokemon.DUMMY_LIST_POKEMON_AREA
 import com.example.juaraandroid_pokemonapp.DummyPokemon.DUMMY_POKEMON_CHARACTERISTIC
 import com.example.juaraandroid_pokemonapp.DummyPokemon.DUMMY_POKEMON_DETAIL
+import com.example.juaraandroid_pokemonapp.DummyPokemon.DUMMY_POKEMON_EGG
+import com.example.juaraandroid_pokemonapp.DummyPokemon.DUMMY_POKEMON_EVOLUTION
 import com.example.juaraandroid_pokemonapp.DummyPokemon.DUMMY_POKEMON_MAIN_RESPONSE
 import com.example.juaraandroid_pokemonapp.DummyPokemon.DUMMY_POKEMON_SPECIES_DETAIL
 import com.example.juaraandroid_pokemonapp.DummyPokemon.DUMMY_URL_POKEMON_RESULTS_1
@@ -161,6 +163,100 @@ class PokemonRemoteDataSourceImplTest {
     }
 
     @Test
+    fun `getDetailPokemonDirectByName success and return value`() = runTest {
+        //given
+        coEvery { api.getPokemonDirectByName(any()) } returns DUMMY_POKEMON_DETAIL
+        //when
+        val results = sut.getDetailPokemonDirectByName("a")
+        //then
+        coVerify { api.getPokemonDirectByName(any()) }
+        Assert.assertEquals(DUMMY_POKEMON_DETAIL, results)
+        Assert.assertEquals(DUMMY_POKEMON_DETAIL.pokemonId, results.pokemonId)
+        Assert.assertEquals(DUMMY_POKEMON_DETAIL.pokemonName, results.pokemonName)
+        Assert.assertEquals(DUMMY_POKEMON_DETAIL.pokemonHeight, results.pokemonHeight)
+        Assert.assertEquals(DUMMY_POKEMON_DETAIL.pokemonWeight, results.pokemonWeight)
+    }
+
+    @Test
+    fun `getDetailPokemonDirectByName failed when Api Throw exception`() = runTest {
+        var isExceptionThrown = false
+        //given
+        coEvery { api.getPokemonDirectByName(any()) } throws IOException(NETWORK_ERROR)
+        //when
+        try {
+            sut.getDetailPokemonDirectByName("a")
+        } catch (e: Exception) {
+            isExceptionThrown = true
+            Assert.assertEquals(e.message, NETWORK_ERROR)
+        }
+        //then
+        coVerify { api.getPokemonDirectByName(any()) }
+        Assert.assertTrue(isExceptionThrown)
+    }
+
+
+    @Test
+    fun `getPokemonEggGroup success and return value`() = runTest {
+        //given
+        coEvery { api.getPokemonEggGroup(any()) } returns DUMMY_POKEMON_EGG
+        //when
+        val results = sut.getPokemonEggGroup("a")
+        //then
+        coVerify { api.getPokemonEggGroup(any()) }
+        Assert.assertEquals(DUMMY_POKEMON_EGG.eggGroupSpecies, results)
+        Assert.assertEquals(DUMMY_POKEMON_EGG.eggGroupName, "a")
+        Assert.assertEquals(DUMMY_POKEMON_EGG.eggGroupSpecies[0].name, "a")
+    }
+
+    @Test
+    fun `getPokemonEggGroup failed when Api Throw exception`() = runTest {
+        var isExceptionThrown = false
+        //given
+        coEvery { api.getPokemonEggGroup(any()) } throws IOException(NETWORK_ERROR)
+        //when
+        try {
+            sut.getPokemonEggGroup("a")
+        } catch (e: Exception) {
+            isExceptionThrown = true
+            Assert.assertEquals(e.message, NETWORK_ERROR)
+        }
+        //then
+        coVerify { api.getPokemonEggGroup(any()) }
+        Assert.assertTrue(isExceptionThrown)
+    }
+
+    //=
+
+    @Test
+    fun `getPokemonEvolution success and return value`() = runTest {
+        //given
+        coEvery { api.getPokemonEvolution(any()) } returns DUMMY_POKEMON_EVOLUTION
+        //when
+        val results = sut.getPokemonEvolution("a")
+        //then
+        coVerify { api.getPokemonEvolution(any()) }
+        Assert.assertEquals(DUMMY_POKEMON_EVOLUTION.evolutionChain.evolveTo.first().evolvingPokemonSpecies, results)
+    }
+
+    @Test
+    fun `getPokemonEvolution failed when Api Throw exception`() = runTest {
+        var isExceptionThrown = false
+        //given
+        coEvery { api.getPokemonEvolution(any()) } throws IOException(NETWORK_ERROR)
+        //when
+        try {
+            sut.getPokemonEvolution("a")
+        } catch (e: Exception) {
+            isExceptionThrown = true
+            Assert.assertEquals(e.message, NETWORK_ERROR)
+        }
+        //then
+        coVerify { api.getPokemonEvolution(any()) }
+        Assert.assertTrue(isExceptionThrown)
+    }
+
+    //=
+    @Test
     fun `getDetailPokemonCharacteristic success and return value`() = runTest {
         //given
         coEvery { baseSource.oneShotCalls(api.getPokemonCharacteristic(any())) } returns ApiResult.Success(
@@ -283,16 +379,16 @@ class PokemonRemoteDataSourceImplTest {
             results.data.pokemonHappiness
         )
         Assert.assertEquals(
-            DUMMY_POKEMON_SPECIES_DETAIL.pokemonColor.pokemonColor,
-            results.data.pokemonColor.pokemonColor
+            DUMMY_POKEMON_SPECIES_DETAIL.pokemonColor?.pokemonColor,
+            results.data.pokemonColor?.pokemonColor
         )
         Assert.assertEquals(
-            DUMMY_POKEMON_SPECIES_DETAIL.pokemonShape.pokemonShape,
-            results.data.pokemonShape.pokemonShape
+            DUMMY_POKEMON_SPECIES_DETAIL.pokemonShape?.pokemonShape,
+            results.data.pokemonShape?.pokemonShape
         )
         Assert.assertEquals(
-            DUMMY_POKEMON_SPECIES_DETAIL.pokemonGeneration.pokemonGenerationLString,
-            results.data.pokemonGeneration.pokemonGenerationLString
+            DUMMY_POKEMON_SPECIES_DETAIL.pokemonGeneration?.pokemonGenerationLString,
+            results.data.pokemonGeneration?.pokemonGenerationLString
         )
 
     }
