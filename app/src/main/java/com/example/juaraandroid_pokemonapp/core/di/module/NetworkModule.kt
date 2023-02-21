@@ -1,10 +1,9 @@
 package com.example.juaraandroid_pokemonapp.core.di.module
 
 import android.content.Context
-import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.ApiInterface
-import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant
-import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant.BASE_URL
-import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant.NETWORK_ERROR
+import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.rest.ApiInterface
+import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.rest.NetworkConstant
+import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.rest.NetworkConstant.BASE_URL
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module

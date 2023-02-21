@@ -5,10 +5,10 @@ import com.example.juaraandroid_pokemonapp.DummyPokemon.DUMMY_POKEMON_DETAIL
 import com.example.juaraandroid_pokemonapp.DummyPokemon.DUMMY_POKEMON_MAIN_RESPONSE
 import com.example.juaraandroid_pokemonapp.DummyPokemon.DUMMY_POKEMON_QUIZ_ENTITY
 import com.example.juaraandroid_pokemonapp.DummyPokemon.DUMMY_POKEMON_SPECIES_DETAIL
-import com.example.juaraandroid_pokemonapp.core.data.datasource.PokemonRemoteDataSource
+import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.PokemonRemoteDataSource
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.PokemonCacheDataSource
-import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant.EMPTY_DATA
-import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant.NETWORK_ERROR
+import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.rest.NetworkConstant.EMPTY_DATA
+import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.rest.NetworkConstant.NETWORK_ERROR
 import com.example.juaraandroid_pokemonapp.core.domain.common.DataSourceResult
 import com.example.juaraandroid_pokemonapp.core.domain.common.DomainResult
 import com.example.juaraandroid_pokemonapp.core.domain.common.mapToDetail

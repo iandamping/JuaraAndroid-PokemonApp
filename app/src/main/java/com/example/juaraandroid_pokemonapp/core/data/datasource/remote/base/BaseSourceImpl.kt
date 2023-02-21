@@ -1,5 +1,6 @@
-package com.example.juaraandroid_pokemonapp.core.data.datasource.remote
+package com.example.juaraandroid_pokemonapp.core.data.datasource.remote.base
 
+import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.rest.NetworkConstant
 import com.example.juaraandroid_pokemonapp.core.domain.common.ApiResult
 import retrofit2.Response
 import java.io.IOException

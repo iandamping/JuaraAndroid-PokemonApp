@@ -1,8 +1,8 @@
-package com.example.juaraandroid_pokemonapp.core.data.datasource.remote
+package com.example.juaraandroid_pokemonapp.core.data.datasource.remote.rest
 
-import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant.GET_POKEMON
-import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant.GET_POKEMON_AREAS
-import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant.GET_POKEMON_CHARACTERISTIC
+import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.rest.NetworkConstant.GET_POKEMON
+import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.rest.NetworkConstant.GET_POKEMON_AREAS
+import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.rest.NetworkConstant.GET_POKEMON_CHARACTERISTIC
 import com.example.juaraandroid_pokemonapp.core.data.datasource.response.*
 import retrofit2.Response
 import retrofit2.http.GET

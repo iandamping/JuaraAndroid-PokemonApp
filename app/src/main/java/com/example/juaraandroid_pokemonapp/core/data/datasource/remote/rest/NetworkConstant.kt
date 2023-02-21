@@ -1,4 +1,4 @@
-package com.example.juaraandroid_pokemonapp.core.data.datasource.remote
+package com.example.juaraandroid_pokemonapp.core.data.datasource.remote.rest
 
 /**
  * Created by Ian Damping on 07,May,2021

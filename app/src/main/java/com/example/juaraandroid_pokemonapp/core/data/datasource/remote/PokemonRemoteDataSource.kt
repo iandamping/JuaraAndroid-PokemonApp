@@ -1,4 +1,4 @@
-package com.example.juaraandroid_pokemonapp.core.data.datasource
+package com.example.juaraandroid_pokemonapp.core.data.datasource.remote
 
 import com.example.juaraandroid_pokemonapp.core.data.datasource.response.*
 import com.example.juaraandroid_pokemonapp.core.domain.common.DataSourceResult

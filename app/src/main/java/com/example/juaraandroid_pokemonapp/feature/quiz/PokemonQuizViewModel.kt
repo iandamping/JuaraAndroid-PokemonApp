@@ -2,7 +2,7 @@ package com.example.juaraandroid_pokemonapp.feature.quiz
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant.EMPTY_DATA
+import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.rest.NetworkConstant.EMPTY_DATA
 import com.example.juaraandroid_pokemonapp.core.domain.usecase.PokemonUseCase
 import com.example.juaraandroid_pokemonapp.feature.state.QuizPokemonState
 import dagger.hilt.android.lifecycle.HiltViewModel
