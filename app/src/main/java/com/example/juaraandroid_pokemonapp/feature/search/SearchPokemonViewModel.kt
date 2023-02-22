@@ -2,7 +2,7 @@ package com.example.juaraandroid_pokemonapp.feature.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant
+import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.rest.NetworkConstant
 import com.example.juaraandroid_pokemonapp.core.domain.usecase.PokemonUseCase
 import com.example.juaraandroid_pokemonapp.feature.state.SearchPokemonState
 import dagger.hilt.android.lifecycle.HiltViewModel

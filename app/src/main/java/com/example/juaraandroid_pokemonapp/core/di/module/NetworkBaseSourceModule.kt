@@ -1,7 +1,7 @@
 package com.example.juaraandroid_pokemonapp.core.di.module
 
-import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.BaseSource
-import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.BaseSourceImpl
+import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.base.BaseSource
+import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.base.BaseSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

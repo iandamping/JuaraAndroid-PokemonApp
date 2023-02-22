@@ -1,8 +1,11 @@
-package com.example.juaraandroid_pokemonapp.core.data.datasource
+package com.example.juaraandroid_pokemonapp.core.data.datasource.remote
 
-import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.ApiInterface
-import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.BaseSource
-import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant.EMPTY_DATA
+import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.area.RemotePokemonAreaManager
+import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.characteristic.RemotePokemonCharacteristicManager
+import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.eggGroup.RemotePokemonEggGroupManager
+import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.evolution.RemotePokemonEvolutionManager
+import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.pokemon.RemotePokemonManager
+import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.species.RemotePokemonSpeciesManager
 import com.example.juaraandroid_pokemonapp.core.data.datasource.response.*
 import com.example.juaraandroid_pokemonapp.core.domain.common.ApiResult
 import com.example.juaraandroid_pokemonapp.core.domain.common.DataSourceResult
@@ -15,31 +18,31 @@ import javax.inject.Inject
  * Indonesia.
  */
 class PokemonRemoteDataSourceImpl @Inject constructor(
-    baseSource: BaseSource,
-    private val api: ApiInterface
-) : PokemonRemoteDataSource, BaseSource by baseSource {
+    private val speciesManager: RemotePokemonSpeciesManager,
+    private val areaManager: RemotePokemonAreaManager,
+    private val characteristicManager: RemotePokemonCharacteristicManager,
+    private val eggGroupManager: RemotePokemonEggGroupManager,
+    private val pokemonManager: RemotePokemonManager,
+    private val evolutionManager: RemotePokemonEvolutionManager
+) : PokemonRemoteDataSource {
     override suspend fun getPokemon(): DataSourceResult<List<PokemonResultsResponse>> {
-        return when (val response = oneShotCalls(api.getMainPokemon())) {
+        return when (val response = pokemonManager.getPokemon()) {
             is ApiResult.Error -> DataSourceResult.SourceError(response.exception)
-            is ApiResult.Success -> if (response.data.pokemonResults.isEmpty()) {
-                DataSourceResult.SourceError(Exception(EMPTY_DATA))
-            } else DataSourceResult.SourceValue(response.data.pokemonResults)
+            is ApiResult.Success -> DataSourceResult.SourceValue(response.data)
         }
     }
 
     override suspend fun getPaginationPokemon(offset: Int): DataSourceResult<List<PokemonResultsResponse>> {
-        return when (val response = oneShotCalls(api.getPaginationMainPokemon(offset))) {
+        return when (val response = pokemonManager.getPaginationPokemon(offset)) {
             is ApiResult.Error -> DataSourceResult.SourceError(response.exception)
-            is ApiResult.Success -> if (response.data.pokemonResults.isEmpty()) {
-                DataSourceResult.SourceError(Exception(EMPTY_DATA))
-            } else DataSourceResult.SourceValue(response.data.pokemonResults)
+            is ApiResult.Success -> DataSourceResult.SourceValue(response.data)
         }
     }
 
     @kotlin.jvm.Throws(Exception::class)
     override suspend fun getDetailPokemon(url: String): PokemonDetailResponse {
         return try {
-            api.getPokemon(url)
+            pokemonManager.getDetailPokemon(url)
         } catch (e: Exception) {
             throw e
         }
@@ -48,7 +51,7 @@ class PokemonRemoteDataSourceImpl @Inject constructor(
     @kotlin.jvm.Throws(Exception::class)
     override suspend fun getDetailPokemonDirectByName(name: String): PokemonDetailResponse {
         return try {
-            api.getPokemonDirectByName(name)
+            pokemonManager.getDetailPokemonDirectByName(name)
         } catch (e: Exception) {
             throw e
         }
@@ -56,7 +59,7 @@ class PokemonRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun getPokemonEggGroup(url: String): List<ItemPokemonEggResponse> {
         return try {
-            api.getPokemonEggGroup(url).eggGroupSpecies
+            eggGroupManager.getPokemonEggGroup(url)
         } catch (e: Exception) {
             throw e
         }
@@ -64,49 +67,42 @@ class PokemonRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun getPokemonEvolution(url: String): EvolvingPokemon {
         return try {
-            api.getPokemonEvolution(url).evolutionChain.evolveTo.first().evolvingPokemonSpecies
+            evolutionManager.getPokemonEvolution(url)
         } catch (e: Exception) {
             throw e
         }
     }
 
     override suspend fun getDetailPokemonCharacteristic(id: Int): DataSourceResult<String> {
-        return when (val response = oneShotCalls(api.getPokemonCharacteristic(id))) {
+        return when (val response = characteristicManager.getDetailPokemonCharacteristic(id)) {
             is ApiResult.Error -> DataSourceResult.SourceError(response.exception)
-            is ApiResult.Success -> {
-                val position = response.data.descriptions.indexOfFirst { it.language.name == "en" }
-                DataSourceResult.SourceValue(response.data.descriptions[position].description)
-            }
+            is ApiResult.Success -> DataSourceResult.SourceValue(response.data)
         }
     }
 
     override suspend fun getPokemonLocationAreas(id: Int): DataSourceResult<List<String>> {
-        return when (val response = oneShotCalls(api.getPokemonLocationAreas(id))) {
+        return when (val response = areaManager.getPokemonLocationAreas(id)) {
             is ApiResult.Error -> DataSourceResult.SourceError(response.exception)
-            is ApiResult.Success -> {
-                if (response.data.isNotEmpty()) {
-                    DataSourceResult.SourceValue(response.data.map { it.area.name })
-                } else DataSourceResult.SourceError(Exception(EMPTY_DATA))
-            }
+            is ApiResult.Success -> DataSourceResult.SourceValue(response.data)
         }
     }
 
     override suspend fun getPokemonById(id: Int): DataSourceResult<PokemonDetailResponse> {
-        return when (val response = oneShotCalls(api.getPokemonById(id))) {
+        return when (val response = pokemonManager.getPokemonById(id)) {
             is ApiResult.Error -> DataSourceResult.SourceError(response.exception)
             is ApiResult.Success -> DataSourceResult.SourceValue(response.data)
         }
     }
 
     override suspend fun getPokemonByName(name: String): DataSourceResult<PokemonDetailResponse> {
-        return when (val response = oneShotCalls(api.getPokemonByName(name))) {
+        return when (val response = pokemonManager.getPokemonByName(name)) {
             is ApiResult.Error -> DataSourceResult.SourceError(response.exception)
             is ApiResult.Success -> DataSourceResult.SourceValue(response.data)
         }
     }
 
     override suspend fun getDetailSpeciesPokemon(id: Int): DataSourceResult<PokemonSpeciesDetailResponse> {
-        return when (val response = oneShotCalls(api.getPokemonSpecies(id))) {
+        return when (val response = speciesManager.getDetailSpeciesPokemon(id)) {
             is ApiResult.Error -> DataSourceResult.SourceError(response.exception)
             is ApiResult.Success -> DataSourceResult.SourceValue(response.data)
         }
