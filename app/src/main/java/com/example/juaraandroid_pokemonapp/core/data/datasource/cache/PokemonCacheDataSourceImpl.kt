@@ -3,24 +3,20 @@ package com.example.juaraandroid_pokemonapp.core.data.datasource.cache
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import androidx.room.withTransaction
+import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.pagination.CachePokemonPaginationManager
+import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.quiz.CachePokemonQuizManager
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.PokemonDatabase
-import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.dao.PokemonQuizDao
-import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.dao.PokemonRemoteKeyDao
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonPaginationEntity
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonQuizEntity
 import com.example.juaraandroid_pokemonapp.core.data.datasource.cache.room.entity.PokemonRemoteKeysEntity
-import com.example.juaraandroid_pokemonapp.core.domain.common.mapToPaginationDatabase
-import com.example.juaraandroid_pokemonapp.core.domain.common.mapToQuizDatabase
 import com.example.juaraandroid_pokemonapp.core.domain.model.PokemonDetail
-import com.spesolution.myapplication.core.data.datasource.cache.room.PokemonPaginationDao
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class PokemonCacheDataSourceImpl @Inject constructor(
     private val db: PokemonDatabase,
-    private val quizDao: PokemonQuizDao,
-    private val paginationDao: PokemonPaginationDao,
-    private val remoteKeysDao: PokemonRemoteKeyDao
+    private val quizManager: CachePokemonQuizManager,
+    private val paginationManager: CachePokemonPaginationManager
 ) : PokemonCacheDataSource {
 
     override suspend fun <T> databaseTransaction(block: suspend () -> T): T {
@@ -30,63 +26,55 @@ class PokemonCacheDataSourceImpl @Inject constructor(
     }
 
     override suspend fun clearPagination() {
-        paginationDao.deleteAllPokemon()
+        paginationManager.clearPagination()
     }
 
     override suspend fun clearRemoteKeys() {
-        remoteKeysDao.clearRemoteKeys()
+        paginationManager.clearRemoteKeys()
     }
 
     override suspend fun clearQuiz() {
-        quizDao.deleteAllQuizPokemon()
+        quizManager.clearQuiz()
     }
 
     override suspend fun savePagination(data: List<PokemonDetail>) {
-        paginationDao.insertPokemon(*data.map { it.mapToPaginationDatabase() }.toTypedArray())
+        paginationManager.savePagination(data)
     }
 
     override suspend fun saveQuiz(data: List<PokemonDetail>) {
-        quizDao.insertPokemon(*data.map { it.mapToQuizDatabase() }.toTypedArray())
+        quizManager.saveQuiz(data)
     }
 
     override suspend fun saveRemoteKeys(data: List<PokemonRemoteKeysEntity>) {
-        remoteKeysDao.insertKey(*data.toTypedArray())
+        paginationManager.saveRemoteKeys(data)
     }
 
     override fun getPagination(): PagingSource<Int, PokemonPaginationEntity> {
-        return paginationDao.loadPokemon()
+        return paginationManager.getPagination()
     }
 
     override fun getPokemonQuiz(): Flow<List<PokemonQuizEntity>> {
-        return quizDao.loadQuizPokemon()
+        return quizManager.getPokemonQuiz()
     }
 
     override fun getSinglePokemonQuiz(id: Int): Flow<PokemonQuizEntity?> {
-        return quizDao.loadQuizPokemonById(id)
+        return quizManager.getSinglePokemonQuiz(id)
     }
 
     override suspend fun getRemoteKeys(data: Int): PokemonRemoteKeysEntity? {
-        return remoteKeysDao.remoteKeysRepoId(data)
+        return paginationManager.getRemoteKeys(data)
     }
 
     override suspend fun getRemoteKeyForLastItem(state: PagingState<Int, PokemonPaginationEntity>): PokemonRemoteKeysEntity? {
-        return state.pages.lastOrNull { it.data.isNotEmpty() }?.data?.lastOrNull()?.let { poke ->
-            remoteKeysDao.remoteKeysRepoId(poke.pokemonId)
-        }
+        return paginationManager.getRemoteKeyForLastItem(state = state)
+
     }
 
     override suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, PokemonPaginationEntity>): PokemonRemoteKeysEntity? {
-        return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()
-            ?.let { poke ->
-                remoteKeysDao.remoteKeysRepoId(poke.pokemonId)
-            }
+        return paginationManager.getRemoteKeyForFirstItem(state = state)
     }
 
     override suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, PokemonPaginationEntity>): PokemonRemoteKeysEntity? {
-        return state.anchorPosition?.let { position ->
-            state.closestItemToPosition(position)?.pokemonId?.let { repoId ->
-                remoteKeysDao.remoteKeysRepoId(repoId)
-            }
-        }
+        return paginationManager.getRemoteKeyClosestToCurrentPosition(state = state)
     }
 }
