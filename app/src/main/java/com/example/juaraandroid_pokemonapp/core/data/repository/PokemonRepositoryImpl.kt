@@ -12,14 +12,19 @@ import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkCo
 import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant.DEFAULT_ERROR
 import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant.EMPTY_DATA
 import com.example.juaraandroid_pokemonapp.core.data.datasource.remote.NetworkConstant.POKEMON_STARTING_OFFSET
-import com.example.juaraandroid_pokemonapp.core.domain.common.*
+import com.example.juaraandroid_pokemonapp.core.domain.common.DataSourceResult
+import com.example.juaraandroid_pokemonapp.core.domain.common.DomainResult
+import com.example.juaraandroid_pokemonapp.core.domain.common.mapListToDetail
+import com.example.juaraandroid_pokemonapp.core.domain.common.mapToDetail
+import com.example.juaraandroid_pokemonapp.core.domain.common.mapToSpeciesDetail
 import com.example.juaraandroid_pokemonapp.core.domain.model.PokemonDetail
 import com.example.juaraandroid_pokemonapp.core.domain.model.PokemonDetailSpecies
 import com.example.juaraandroid_pokemonapp.core.domain.repository.PokemonRepository
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
@@ -41,11 +46,8 @@ class PokemonRepositoryImpl @Inject constructor(
                 try {
                     val data = withContext(Dispatchers.Default) {
                         result.data.map { singleItem ->
-                            async {
-                                remoteDataSource.getDetailPokemon(singleItem.pokemonUrl)
-                                    .mapToDetail()
-                            }
-                        }.awaitAll()
+                            remoteDataSource.getDetailPokemon(singleItem.pokemonUrl).mapToDetail()
+                        }
                     }
 
                     if (data.isEmpty()) {
@@ -101,11 +103,9 @@ class PokemonRepositoryImpl @Inject constructor(
             if (mapCacheResult.isEmpty()) {
                 val getPokemonFromRemote = withContext(Dispatchers.Default) {
                     remoteResultName.map { singleItem ->
-                        async {
                             remoteDataSource.getDetailPokemonDirectByName(singleItem)
                                 .mapToDetail()
-                        }
-                    }.awaitAll()
+                    }
                 }
 
                 if (getPokemonFromRemote.isNotEmpty()) {
@@ -158,11 +158,9 @@ class PokemonRepositoryImpl @Inject constructor(
                         is DataSourceResult.SourceValue -> {
                             val paginationData = withContext(Dispatchers.Default) {
                                 apiResponse.data.map { singleItem ->
-                                    async {
                                         remoteDataSource.getDetailPokemon(singleItem.pokemonUrl)
                                             .mapToDetail()
-                                    }
-                                }.awaitAll()
+                                }
                             }
                             val endOfPaginationReached = paginationData.isEmpty()
                             cacheDataSource.databaseTransaction {

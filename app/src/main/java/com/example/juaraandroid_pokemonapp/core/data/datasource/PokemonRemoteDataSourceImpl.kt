@@ -54,6 +54,7 @@ class PokemonRemoteDataSourceImpl @Inject constructor(
         }
     }
 
+    @kotlin.jvm.Throws(Exception::class)
     override suspend fun getPokemonEggGroup(url: String): List<ItemPokemonEggResponse> {
         return try {
             api.getPokemonEggGroup(url).eggGroupSpecies
@@ -62,6 +63,7 @@ class PokemonRemoteDataSourceImpl @Inject constructor(
         }
     }
 
+    @kotlin.jvm.Throws(Exception::class)
     override suspend fun getPokemonEvolution(url: String): EvolvingPokemon {
         return try {
             api.getPokemonEvolution(url).evolutionChain.evolveTo.first().evolvingPokemonSpecies
